@@ -341,9 +341,9 @@ def main():
     app = QApplication(sys.argv)
     ex = Example()
     ex2 = Example2()
-    ex2.image_display('mel_crop.png')
+    ex2.image_display('Mel_no_border.jpeg')
     ex3 = Example3()
-    ex3.image_display('mel_crop.png')
+    ex3.image_display('Mel_no_border.jpeg')
     sys.exit(app.exec_())
 
 
