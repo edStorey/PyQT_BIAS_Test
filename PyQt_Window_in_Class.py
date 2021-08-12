@@ -129,11 +129,11 @@ class Example(QMainWindow):
 
         label = QLabel(self)
         original_pixmap = QPixmap('smiley.jpg')
-        original = QMovie('timer.gif')
+        self.original = QMovie('timer.gif')
         
         
-        label.setMovie(original)
-        original.start()
+        label.setMovie(self.original)
+        
         label.setScaledContents(True)
         grid2.addWidget(label)
 
@@ -163,11 +163,11 @@ class Example(QMainWindow):
         grid3 = QGridLayout()  
         self.wid3 = QWidget(self)
         label2 = QLabel(self)
-        gif_screen = QMovie('download-percentage.gif')
+        self.gif_screen = QMovie('download-percentage.gif')
         original2 = QPixmap('screensaver.jpg')
         
-        label2.setMovie(gif_screen)
-        gif_screen.start()
+        label2.setMovie(self.gif_screen)
+        self.gif_screen.start()
         label2.setScaledContents(True)
         grid3.addWidget(label2)
 
@@ -233,6 +233,7 @@ class Example(QMainWindow):
             self.timer.start(20000)
             self.screen_timer.stop()
             self.recording_screen = 1
+            self.original.start()
             
             
             
@@ -240,6 +241,7 @@ class Example(QMainWindow):
             
             self.wid2.hide()
             self.wid.show()
+            self.original.stop()
             self.screen_timer.start(5000)
             self.recording_screen = 0
             
@@ -251,6 +253,7 @@ class Example(QMainWindow):
         self.wid3.hide()
         #self.wid.show()
         self.screen_timer.stop()
+        self.gif_screen.stop()
         if self.recording_screen == 0 :
             self.screen_timer.setSingleShot(True)
             self.screen_timer.start(5000)
@@ -263,6 +266,7 @@ class Example(QMainWindow):
             self.screen_saver_on = 0
             self.wid.hide()
             self.wid3.show()
+            self.gif_screen.start()
         else :
             #self.screen_timer.stop()
             self.screen_saver_on = 1
