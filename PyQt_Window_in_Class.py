@@ -17,13 +17,11 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 """
 
 import sys, string
-from PyQt5.QtWidgets import (QWidget, QToolTip, QGridLayout,
+from PyQt5.QtWidgets import (QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
-from PyQt5.QtGui import QFont, QPixmap, QMovie
+from PyQt5.QtGui import QPixmap, QMovie
 
-from PyQt5.QtCore import QRect, QSize, QTimer
-
-import time
+from PyQt5.QtCore import QRect, QTimer
 
 class Example(QMainWindow):
 
@@ -32,22 +30,18 @@ class Example(QMainWindow):
 
         self.initUI()
 
-
-
-
     def initUI(self):
 
 
-        self.display_monitor = 0
-
+        self.main_widget  = 0
         self.recording_screen = 0
+        self.screen_saver_on = 0
+
+        self.milli = 1000
+        self.screen_wait_time = 5 * self.milli
+        self.timer_wait_time = 20 * self.milli
     
-        monitor = QDesktopWidget().screenGeometry(self.display_monitor)
-        self.move(monitor.left(), monitor.top())
-
-        self.showFullScreen()
-        self.main_widget = 0
-
+        self.choose_window(0)
 
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
@@ -55,46 +49,26 @@ class Example(QMainWindow):
 
         self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout()  
+        label, label2 = QLabel(self), QLabel(self)
+        self.timer, self.screen_timer = QTimer(), QTimer()
+        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
+        for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3]] :
+            self.create_layouts(layout[0], layout[1], Rect)
 
 
-
-        self.create_layouts(self.wid, grid1, Rect)
-        self.create_layouts(self.wid2, grid2, Rect)
-        self.create_layouts(self.wid3, grid3, Rect)
-
-
-
-        label, label2 = QLabel(self), QLabel(self)
-        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')
- 
         self.add_movie(label, grid2, self.original)
         self.add_movie(label2, grid3, self.gif_screen)
 
         self.set_button_layout(grid1)
 
         
-
-
-
-
-
-        self.screen_saver_on = 0
-        self.screen_timer = QTimer()
         self.screen_timer.timeout.connect(self.screen_saver_timeout)
-       
+        self.timer.timeout.connect(self.widget_hide)
+        
 
-        
-        
-        self.layout_for_wids.addWidget(self.wid3)
-        self.layout_for_wids.addWidget(self.wid)
-        self.layout_for_wids.addWidget(self.wid2)
-        
-        
-        
-        self.central_wid.setLayout(self.layout_for_wids)
-        self.setCentralWidget(self.central_wid)
+        self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
 
         self.wid.hide()
         self.wid2.hide()
@@ -103,6 +77,68 @@ class Example(QMainWindow):
         
 
         self.show()
+
+
+    def widget_hide(self) :
+        if self.main_widget == 0 :
+
+            self.screen_timer.stop()
+            self.start_timer(self.timer, self.timer_wait_time)
+            self.original.start()
+            self.widget_swap(self.wid2, self.wid)
+            self.recording_screen = 1
+            self.main_widget = 1         
+            
+        else :
+
+            self.original.stop()
+            self.start_timer(self.screen_timer, self.screen_wait_time)
+            self.widget_swap(self.wid, self.wid2)
+            self.recording_screen = 0
+            self.main_widget = 0 
+
+
+    ####  OVERWRITING REAL FUNCTION
+    def mousePressEvent(self, QmouseEvent) :
+        
+        if self.recording_screen == 0 :
+            
+            self.screen_timer.stop()
+            self.screen_saver_on = 0
+            self.start_timer(self.screen_timer, self.screen_wait_time)
+            self.screen_saver_timeout()
+            self.wid3.hide()
+
+
+    
+
+        
+    def screen_saver_timeout(self) :
+        x = 0
+        if self.screen_saver_on == 1 :
+            self.screen_saver_on = 0
+            self.widget_swap(self.wid3, self.wid)
+            self.gif_screen.start()
+        else :
+            self.screen_saver_on = 1
+            self.gif_screen.stop()
+            self.widget_swap(self.wid, self.wid3)
+
+
+    def start_timer(self, timer, time) :
+        timer.setSingleShot(True)
+        timer.start(time)
+
+    def widget_swap(self, show, hide) :
+        show.show()
+        hide.hide()
+
+
+    def choose_window(self,  window) :
+        monitor = QDesktopWidget().screenGeometry(window)
+        self.move(monitor.left(), monitor.top())
+
+        self.showFullScreen()
 
 
     def create_layouts(self, widget, grid, rect) :
@@ -158,209 +194,88 @@ class Example(QMainWindow):
 
 
 
-    def widget_hide(self) :
-        if self.main_widget == 0 :
-            
-            self.wid.hide()
-            self.wid2.show()
-            self.main_widget = 1
-            self.timer = QTimer()
-            self.timer.timeout.connect(self.widget_hide)
-            self.timer.setSingleShot(True)
-            self.timer.start(20000)
-            self.screen_timer.stop()
-            self.recording_screen = 1
-            self.original.start()
-            
-            
-            
-        else :
-            
-            self.wid2.hide()
-            self.wid.show()
-            self.original.stop()
-            self.screen_timer.setSingleShot(True)
-            self.screen_timer.start(5000)
-            self.recording_screen = 0
-            
-            self.main_widget = 0 
-
-    ####  OVERWRITING REAL FUNCTION
-    def mousePressEvent(self, QmouseEvent) :
+    def set_central_widget(self, Widgets, central_widget) :
+        for widget in Widgets :
+            self.layout_for_wids.addWidget(widget)      
         
-        if self.recording_screen == 0 :
-            self.wid3.hide()
-            #
-            #self.wid.show()
-            self.screen_timer.stop()
-            
-            self.screen_saver_on = 0
-            self.screen_timer.setSingleShot(True)
-            self.screen_timer.start(5000)
-        
-            self.screen_saver_timeout()
-        
-    def screen_saver_timeout(self) :
-        x = 0
-        if self.screen_saver_on == 1 :
-            self.screen_saver_on = 0
-            self.wid.hide()
-            self.wid3.show()
-            self.gif_screen.start()
-        else :
-            #self.screen_timer.stop()
-            self.screen_saver_on = 1
-            self.gif_screen.stop()
-            self.wid3.hide()
-            self.wid.show()
+        central_widget.setLayout(self.layout_for_wids)
+        self.setCentralWidget(central_widget)
 
-            
-            
-
-
-
-        
-            
-
-
-    def window2(self):                                             # <===
-        self.w = Example2()
-        
-        monitor = QDesktopWidget().screenGeometry(self.display_monitor)
-        self.w.move(monitor.left(), monitor.top())
-        self.w.showFullScreen()
-        self.w.show()
-
-        QToolTip.setFont(QFont('SansSerif', 10))
-
-        self.setToolTip('This is a <b>SCREEN 1</b> widget')
-
-        btn = QPushButton('SCREEN 1', self)
-        #new_window = Example2()
-        btn.resize(btn.sizeHint())
-        btn.move(50, 50)
-        btn.setToolTip('This is a <b>SCREEN 1</b> widget')
-        self.hide()
 
 
 class Example2(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Window22222")
+        
         self.setGeometry(300, 300, 300, 200)
-        monitor = QDesktopWidget().screenGeometry(1)
+        self.choose_window(1)
+        self.show()
+
+
+    def choose_window(self,  window) :
+        monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
-        QToolTip.setFont(QFont('SansSerif', 10))
         self.showFullScreen()
 
-        self.setToolTip('This is a <b>SCREEN 2</b> widget')
-
-        btn = QPushButton('SCREEN 2', self)
-        #new_window = Example2()
-        btn.resize(btn.sizeHint())
-        btn.move(50, 50)
-        btn.setToolTip('This is a <b>SCREEN 2</b> widget')
-        
-
-        """self.centralwidget = QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
-
-        self.photo = QLabel(self.centralwidget)
-
-        self.photo.setGeometry(QRect(0, 0, 841, 511))
-        self.photo.resize(self.photo.sizeHint())
-        self.photo.setText("")
-
-        self.photo.setPixmap(QPixmap("ash_zoom_2.PNG"))
-
-        self.photo.setScaledContents(True)
-        self.photo.setObjectName("photo")
-
-        self.photo.move(100, 100)
-
-        self.photo.show()"""
 
     def image_display(self, image) :
 
-        #Rect = QRect(10,)
-        #Rect.setRect(10,10,100,100)
         label = QLabel(self)
-        #.setRect(10,10, 100, 100)
-        #label.setRect(10,10, 100, 100)
         orignal = QPixmap(image)
         Rect = QRect(0,0,int(orignal.width()/2),orignal.height())
         cropped = QPixmap(orignal.copy(Rect))
         label.setPixmap(cropped.scaledToWidth(self.width()))
         label.setScaledContents(True)
-        #label.setPixmap(cropped.scaledToHeight(self.height()))
-        
-        
         
         label.move(0, 0)
         label.show()
         label.resize(self.width() ,self.height())
-        #label.resize(pixmap.width(),pixmap.height())
 
-
-        #self.setCentralWidget(self.centralWidget)
-        
-        #self.show()
 
 
 class Example3(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Window22222")
         self.setGeometry(300, 300, 300, 200)
-        monitor = QDesktopWidget().screenGeometry(2)
-        self.move(monitor.left(), monitor.top())
-
-
-        QToolTip.setFont(QFont('SansSerif', 10))
-
-        self.setToolTip('This is a <b>SCREEN 3</b> widget')
-
-        btn = QPushButton('SCREEN 3', self)
-        #new_window = Example2()
-        btn.resize(btn.sizeHint())
-        btn.move(50, 50)
-        btn.setToolTip('This is a <b>SCREEN 3</b> widget')
         
-        self.showFullScreen()
+        self.choose_window(2)
+        
         self.show()
 
     def image_display(self, image) :
 
-        #Rect = QRect(10,)
-        #Rect.setRect(10,10,100,100)
         label = QLabel(self)
-        #.setRect(10,10, 100, 100)
-        #label.setRect(10,10, 100, 100)
         orignal = QPixmap(image)
         Rect = QRect(int(orignal.width()/2)+1,0,int(orignal.width()/2),orignal.height())
         cropped = QPixmap(orignal.copy(Rect))
         label.setPixmap(cropped.scaledToWidth(self.width()))
         label.setScaledContents(True)
-        #label.setPixmap(cropped.scaledToHeight(self.height()))
-        
-        
-        
+
         label.move(0, 0)
         label.show()
         label.resize(self.width(),self.height())
 
+    def choose_window(self,  window) :
+        monitor = QDesktopWidget().screenGeometry(window)
+        self.move(monitor.left(), monitor.top())
+        self.showFullScreen()
+
+
+
 
 def main():
+    spectrogram = 'Mel_no_border.jpeg'
 
     app = QApplication(sys.argv)
     ex = Example()
-    #ex.mousePressEvent = ex.screen_saver_timer()
     ex2 = Example2()
-    ex2.image_display('Mel_no_border.jpeg')
     ex3 = Example3()
-    ex3.image_display('Mel_no_border.jpeg')
+
+    ex2.image_display(spectrogram)
+    ex3.image_display(spectrogram)
+
     sys.exit(app.exec_())
 
 
