@@ -19,7 +19,7 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 import sys, string
 from PyQt5.QtWidgets import (QWidget, QToolTip, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QFont, QPixmap, QMovie
 
 from PyQt5.QtCore import QRect, QSize, QTimer
 
@@ -42,6 +42,8 @@ class Example(QMainWindow):
         self.setToolTip('This is a <b>SCREEN 0</b> widget')
 
         self.display_monitor = 0
+
+        self.recording_screen = 0
     
         monitor = QDesktopWidget().screenGeometry(self.display_monitor)
         self.move(monitor.left(), monitor.top())
@@ -126,9 +128,12 @@ class Example(QMainWindow):
         #wid.move(500,500)
 
         label = QLabel(self)
-        original = QPixmap('smiley.jpg')
+        original_pixmap = QPixmap('smiley.jpg')
+        original = QMovie('timer.gif')
         
-        label.setPixmap(original)
+        
+        label.setMovie(original)
+        original.start()
         label.setScaledContents(True)
         grid2.addWidget(label)
 
@@ -147,15 +152,50 @@ class Example(QMainWindow):
 
         #grid2.addWidget(btn, 0,0)
 
+        
+        #self.wid2.mousePressEvent = self.widget_hide()
+       
+
+        self.wid.hide()
         self.wid2.hide()
         
 
+        grid3 = QGridLayout()  
+        self.wid3 = QWidget(self)
+        label2 = QLabel(self)
+        gif_screen = QMovie('download-percentage.gif')
+        original2 = QPixmap('screensaver.jpg')
+        
+        label2.setMovie(gif_screen)
+        gif_screen.start()
+        label2.setScaledContents(True)
+        grid3.addWidget(label2)
+
+        self.wid3.setLayout(grid3)
+        self.wid3.setGeometry(Rect)
+
+        self.screen_saver_on = 0
+        self.screen_timer = QTimer()
+        self.screen_timer.timeout.connect(self.screen_saver_timeout)
+        #self.screen_timer.timeout.connect(self.screen_saver_timer)
+        #self.screen_timer.setSingleShot(True)
+        #self.screen_timer.start(5000)
         
 
+        
+        
+        self.layout_for_wids.addWidget(self.wid3)
         self.layout_for_wids.addWidget(self.wid)
         self.layout_for_wids.addWidget(self.wid2)
+        
+        
+        
         self.central_wid.setLayout(self.layout_for_wids)
         self.setCentralWidget(self.central_wid)
+
+        #self.wid3.clicked.connect(self.screen_saver_timer())
+        #self.wid.show()
+        self.wid3.show()
         
         
 
@@ -163,8 +203,15 @@ class Example(QMainWindow):
         self.setWindowTitle('Buttonz')
         #self.showFullScreen()
         #self.wid.show()
-       
+
+
+     
+        #self.cwid3 = self.screen_saver_timer()
+
+
         self.show()
+
+        #self.wid2.mousePressEvent  = self.widget_hide()
 
     ##def create_windows(self) :
       #  monitor = QDesktopWidget().screenGeometry(display_monitor)
@@ -173,6 +220,7 @@ class Example(QMainWindow):
 
     def widget_hide(self) :
         if self.main_widget == 0 :
+            
             self.wid.hide()
             #self.setCentralWidget(self.wid2)
             self.wid2.show()
@@ -182,14 +230,48 @@ class Example(QMainWindow):
             #time.sleep(0.001)
             self.timer.setSingleShot(True)
            # time.sleep(0.01)
-            self.timer.start(5000)
+            self.timer.start(20000)
+            self.screen_timer.stop()
+            self.recording_screen = 1
+            
+            
             
         else :
             
             self.wid2.hide()
             self.wid.show()
+            self.screen_timer.start(5000)
+            self.recording_screen = 0
             
             self.main_widget = 0 
+
+    ####  OVERWRITING REAL FUNCTION
+    def mousePressEvent(self, QmouseEvent) :
+        x = 0 
+        self.wid3.hide()
+        #self.wid.show()
+        self.screen_timer.stop()
+        if self.recording_screen == 0 :
+            self.screen_timer.setSingleShot(True)
+            self.screen_timer.start(5000)
+        
+            self.screen_saver_timeout()
+        
+    def screen_saver_timeout(self) :
+        x = 0
+        if self.screen_saver_on == 1 :
+            self.screen_saver_on = 0
+            self.wid.hide()
+            self.wid3.show()
+        else :
+            #self.screen_timer.stop()
+            self.screen_saver_on = 1
+            self.wid3.hide()
+            self.wid.show()
+
+            
+            
+
 
         
 
@@ -340,6 +422,7 @@ def main():
 
     app = QApplication(sys.argv)
     ex = Example()
+    #ex.mousePressEvent = ex.screen_saver_timer()
     ex2 = Example2()
     ex2.image_display('Mel_no_border.jpeg')
     ex3 = Example3()
