@@ -37,9 +37,6 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        QToolTip.setFont(QFont('SansSerif', 10))
-
-        self.setToolTip('This is a <b>SCREEN 0</b> widget')
 
         self.display_monitor = 0
 
@@ -51,38 +48,47 @@ class Example(QMainWindow):
         self.showFullScreen()
         self.main_widget = 0
         #self.setGeometry(300, 300, 800, 800)
+
+
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
-        self.wid = QWidget(self)
-        grid = QGridLayout()  
-
-        grid2 = QGridLayout()  
-        self.wid2 = QWidget(self)
-
-        
+        self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
+        grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout()  
         Rect = QRect(0,0,int(self.width()),int(self.height()))
+
+
+        #grid2 = QGridLayout()  
+        #self.wid2 = QWidget(self)
+
+        
+        
         #grid.setGeometry(Rect)
-        grid.setVerticalSpacing(30)
-        grid.setHorizontalSpacing(70)
+        grid1.setVerticalSpacing(30)
+        grid1.setHorizontalSpacing(70)
         #grid.setSpacing(50)
-        grid.setRowStretch(0,1)
-        grid.setRowStretch(7,1)
-        grid.setColumnStretch(0,1)
-        grid.setColumnStretch(7,1)
+        grid1.setRowStretch(0,1)
+        grid1.setRowStretch(7,1)
+        grid1.setColumnStretch(0,1)
+        grid1.setColumnStretch(7,1)
+
+
+        self.create_layouts(self.wid, grid1, Rect)
+        self.create_layouts(self.wid2, grid2, Rect)
+        self.create_layouts(self.wid3, grid3, Rect)
         
-        self.wid2.setLayout(grid2)
-        self.wid2.setGeometry(Rect)
+        #self.wid2.setLayout(grid2)
+        #self.wid2.setGeometry(Rect)
         
-        
-        #wid.setGeometry(Rect)
-        #grid.setGeometry(Rect)
-        
-        #wid.move(0,50)
-        self.wid.setLayout(grid)
-        self.wid.setGeometry(Rect)
-        #self.setCentralWidget(wid)
-        #wid.setGeometry(Rect)
+      
+        #self.wid.setLayout(grid1)
+        #self.wid.setGeometry(Rect)
+
+        #self.wid3.setLayout(grid3)
+        #self.wid3.setGeometry(Rect)
+
+
+
         ## CREATE UPPERCASE LIST OF LETTERS
         alphabet_string = string.ascii_uppercase
         names = list(alphabet_string)
@@ -116,10 +122,10 @@ class Example(QMainWindow):
          #button.clicked.connect(self.sleep_timer)
 
          if name == 'Z' :
-            grid.addWidget(button, 6, 3)
+            grid1.addWidget(button, 6, 3)
             #continue
          else :
-            grid.addWidget(button, *position)
+            grid1.addWidget(button, *position)
 
         
          
@@ -136,32 +142,11 @@ class Example(QMainWindow):
         
         label.setScaledContents(True)
         grid2.addWidget(label)
-
-        
-
-        
-
-
-        btn = QPushButton('Quit', self)
-        #new_window = Example2()
-        btn.resize(btn.sizeHint())
-        btn.move(self.width() -50, self.height()-50)
-        btn.setToolTip('This is a <b>SCREEN 0</b> widget')
-        #btn.clicked.connect(QApplication.instance().quit)
-        btn.clicked.connect(self.widget_hide)
-
-        #grid2.addWidget(btn, 0,0)
-
-        
-        #self.wid2.mousePressEvent = self.widget_hide()
        
 
         self.wid.hide()
         self.wid2.hide()
         
-
-        grid3 = QGridLayout()  
-        self.wid3 = QWidget(self)
         label2 = QLabel(self)
         self.gif_screen = QMovie('download-percentage.gif')
         original2 = QPixmap('screensaver.jpg')
@@ -171,8 +156,7 @@ class Example(QMainWindow):
         label2.setScaledContents(True)
         grid3.addWidget(label2)
 
-        self.wid3.setLayout(grid3)
-        self.wid3.setGeometry(Rect)
+        
 
         self.screen_saver_on = 0
         self.screen_timer = QTimer()
@@ -193,30 +177,22 @@ class Example(QMainWindow):
         self.central_wid.setLayout(self.layout_for_wids)
         self.setCentralWidget(self.central_wid)
 
-        #self.wid3.clicked.connect(self.screen_saver_timer())
-        #self.wid.show()
         self.wid3.show()
         
         
-
-        #self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('Buttonz')
-        #self.showFullScreen()
-        #self.wid.show()
 
 
-     
-        #self.cwid3 = self.screen_saver_timer()
 
 
         self.show()
 
-        #self.wid2.mousePressEvent  = self.widget_hide()
 
-    ##def create_windows(self) :
-      #  monitor = QDesktopWidget().screenGeometry(display_monitor)
-       # self.w.move(monitor.left(), monitor.top())
-     #   for 
+    def create_layouts(self, widget, grid, rect) :
+        widget.setLayout(grid)
+        widget.setGeometry(rect)
+
+
 
     def widget_hide(self) :
         if self.main_widget == 0 :
@@ -242,6 +218,7 @@ class Example(QMainWindow):
             self.wid2.hide()
             self.wid.show()
             self.original.stop()
+            self.screen_timer.setSingleShot(True)
             self.screen_timer.start(5000)
             self.recording_screen = 0
             
@@ -249,12 +226,14 @@ class Example(QMainWindow):
 
     ####  OVERWRITING REAL FUNCTION
     def mousePressEvent(self, QmouseEvent) :
-        x = 0 
-        self.wid3.hide()
-        #self.wid.show()
-        self.screen_timer.stop()
-        self.gif_screen.stop()
+        
         if self.recording_screen == 0 :
+            self.wid3.hide()
+            #
+            #self.wid.show()
+            self.screen_timer.stop()
+            
+            self.screen_saver_on = 0
             self.screen_timer.setSingleShot(True)
             self.screen_timer.start(5000)
         
@@ -270,6 +249,7 @@ class Example(QMainWindow):
         else :
             #self.screen_timer.stop()
             self.screen_saver_on = 1
+            self.gif_screen.stop()
             self.wid3.hide()
             self.wid.show()
 
