@@ -47,47 +47,83 @@ class Example(QMainWindow):
 
         self.showFullScreen()
         self.main_widget = 0
-        #self.setGeometry(300, 300, 800, 800)
 
 
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
+
         self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout()  
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
 
-        #grid2 = QGridLayout()  
-        #self.wid2 = QWidget(self)
-
-        
-        
-        #grid.setGeometry(Rect)
-        grid1.setVerticalSpacing(30)
-        grid1.setHorizontalSpacing(70)
-        #grid.setSpacing(50)
-        grid1.setRowStretch(0,1)
-        grid1.setRowStretch(7,1)
-        grid1.setColumnStretch(0,1)
-        grid1.setColumnStretch(7,1)
 
 
         self.create_layouts(self.wid, grid1, Rect)
         self.create_layouts(self.wid2, grid2, Rect)
         self.create_layouts(self.wid3, grid3, Rect)
+
+
+
+        label, label2 = QLabel(self), QLabel(self)
+        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')
+ 
+        self.add_movie(label, grid2, self.original)
+        self.add_movie(label2, grid3, self.gif_screen)
+
+        self.set_button_layout(grid1)
+
         
-        #self.wid2.setLayout(grid2)
-        #self.wid2.setGeometry(Rect)
+
+
+
+
+
+        self.screen_saver_on = 0
+        self.screen_timer = QTimer()
+        self.screen_timer.timeout.connect(self.screen_saver_timeout)
+       
+
         
-      
-        #self.wid.setLayout(grid1)
-        #self.wid.setGeometry(Rect)
+        
+        self.layout_for_wids.addWidget(self.wid3)
+        self.layout_for_wids.addWidget(self.wid)
+        self.layout_for_wids.addWidget(self.wid2)
+        
+        
+        
+        self.central_wid.setLayout(self.layout_for_wids)
+        self.setCentralWidget(self.central_wid)
 
-        #self.wid3.setLayout(grid3)
-        #self.wid3.setGeometry(Rect)
+        self.wid.hide()
+        self.wid2.hide()
+        self.wid3.show()
+        self.gif_screen.start()
+        
+
+        self.show()
 
 
+    def create_layouts(self, widget, grid, rect) :
+        widget.setLayout(grid)
+        widget.setGeometry(rect)
+
+
+    def add_movie(self, label, grid, movie) :
+        label.setMovie(movie)
+        label.setScaledContents(True)
+        grid.addWidget(label)
+
+
+    def set_button_layout(self, grid) :
+
+        grid.setVerticalSpacing(30)
+        grid.setHorizontalSpacing(70)
+        grid.setRowStretch(0,1)
+        grid.setRowStretch(7,1)
+        grid.setColumnStretch(0,1)
+        grid.setColumnStretch(7,1)
 
         ## CREATE UPPERCASE LIST OF LETTERS
         alphabet_string = string.ascii_uppercase
@@ -112,85 +148,13 @@ class Example(QMainWindow):
                               "QPushButton::hover { background-color: green }"
                               "QPushButton::pressed { background-color: blue }"
                               )
-                              #"border-style: inset }")
 
-         
-
-         #button.setMinimumSize(50,50)
-         #button.clicked.connect(QApplication.instance().quit)
          button.clicked.connect(self.widget_hide)
-         #button.clicked.connect(self.sleep_timer)
 
          if name == 'Z' :
-            grid1.addWidget(button, 6, 3)
-            #continue
+            grid.addWidget(button, 6, 3)
          else :
-            grid1.addWidget(button, *position)
-
-        
-         
-         #button.resize(1000, 1000)
-         #button.resize(button.sizeHint())
-        #wid.move(500,500)
-
-        label = QLabel(self)
-        original_pixmap = QPixmap('smiley.jpg')
-        self.original = QMovie('timer.gif')
-        
-        
-        label.setMovie(self.original)
-        
-        label.setScaledContents(True)
-        grid2.addWidget(label)
-       
-
-        self.wid.hide()
-        self.wid2.hide()
-        
-        label2 = QLabel(self)
-        self.gif_screen = QMovie('download-percentage.gif')
-        original2 = QPixmap('screensaver.jpg')
-        
-        label2.setMovie(self.gif_screen)
-        self.gif_screen.start()
-        label2.setScaledContents(True)
-        grid3.addWidget(label2)
-
-        
-
-        self.screen_saver_on = 0
-        self.screen_timer = QTimer()
-        self.screen_timer.timeout.connect(self.screen_saver_timeout)
-        #self.screen_timer.timeout.connect(self.screen_saver_timer)
-        #self.screen_timer.setSingleShot(True)
-        #self.screen_timer.start(5000)
-        
-
-        
-        
-        self.layout_for_wids.addWidget(self.wid3)
-        self.layout_for_wids.addWidget(self.wid)
-        self.layout_for_wids.addWidget(self.wid2)
-        
-        
-        
-        self.central_wid.setLayout(self.layout_for_wids)
-        self.setCentralWidget(self.central_wid)
-
-        self.wid3.show()
-        
-        
-        self.setWindowTitle('Buttonz')
-
-
-
-
-        self.show()
-
-
-    def create_layouts(self, widget, grid, rect) :
-        widget.setLayout(grid)
-        widget.setGeometry(rect)
+            grid.addWidget(button, *position)
 
 
 
@@ -198,14 +162,11 @@ class Example(QMainWindow):
         if self.main_widget == 0 :
             
             self.wid.hide()
-            #self.setCentralWidget(self.wid2)
             self.wid2.show()
             self.main_widget = 1
             self.timer = QTimer()
             self.timer.timeout.connect(self.widget_hide)
-            #time.sleep(0.001)
             self.timer.setSingleShot(True)
-           # time.sleep(0.01)
             self.timer.start(20000)
             self.screen_timer.stop()
             self.recording_screen = 1
@@ -257,18 +218,7 @@ class Example(QMainWindow):
             
 
 
-        
 
-        #self.sleep_timer()
-        #time.sleep(5)
-        #self.widget_hide()   
-
-    #def sleep_timer(self) :
-        #self.timer = QTimer()
-        #self.timer.timeout.connect(self.widget_hide)
-        #self.timer.setSingleShot(True)
-        #while(True):
-            #timer.start(1000)
         
             
 
