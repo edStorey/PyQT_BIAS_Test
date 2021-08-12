@@ -37,9 +37,9 @@ class Example(QMainWindow):
         self.recording_screen = 0
         self.screen_saver_on = 0
 
-        self.milli = 1000
-        self.screen_wait_time = 5 * self.milli
-        self.timer_wait_time = 20 * self.milli
+        milli = 1000
+        self.screen_wait_time = 5 * milli
+        self.timer_wait_time = 20 * milli
     
         self.choose_window(0)
 
@@ -79,6 +79,10 @@ class Example(QMainWindow):
         self.show()
 
 
+
+
+    """"FUNCTIONAL FUNCTIONS"""
+
     def widget_hide(self) :
         if self.main_widget == 0 :
 
@@ -108,11 +112,7 @@ class Example(QMainWindow):
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.screen_saver_timeout()
             self.wid3.hide()
-
-
     
-
-        
     def screen_saver_timeout(self) :
         x = 0
         if self.screen_saver_on == 1 :
@@ -133,6 +133,9 @@ class Example(QMainWindow):
         show.show()
         hide.hide()
 
+
+
+    """"  INIT FUNCTIONS   """
 
     def choose_window(self,  window) :
         monitor = QDesktopWidget().screenGeometry(window)
