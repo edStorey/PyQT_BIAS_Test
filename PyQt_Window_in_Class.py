@@ -23,6 +23,8 @@ from PyQt5.QtGui import QPixmap, QMovie
 
 from PyQt5.QtCore import QRect, QTimer
 
+from Microphone_Record import Microphone_Record
+
 class Example(QMainWindow):
 
     def __init__(self):
@@ -275,11 +277,16 @@ def main():
     ex = Example()
     ex2 = Example2()
     ex3 = Example3()
+    Mic = Microphone_Record()
+
+    
 
     ex2.image_display(spectrogram)
     ex3.image_display(spectrogram)
+    Mic.record()
 
     sys.exit(app.exec_())
+
 
 
 if __name__ == '__main__':
