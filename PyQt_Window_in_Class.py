@@ -48,6 +48,12 @@ class Example(QMainWindow):
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
+        self.ex2 = Example2()
+        self.ex3 = Example3()
+
+        self.ex2.image_display('Mel_no_border.jpeg')
+        self.ex3.image_display('Mel_no_border.jpeg')
+
 
         self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout()  
@@ -92,6 +98,8 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
             self.widget_swap(self.wid2, self.wid)
+            self.ex1_change_image(self.ex2, 'smiley.jpg')
+            self.ex1_change_image(self.ex3, 'smiley.jpg')
             self.recording_screen = 1
             self.main_widget = 1         
             
@@ -100,21 +108,15 @@ class Example(QMainWindow):
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
+            self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
             self.recording_screen = 0
             self.main_widget = 0 
 
+    def ex1_change_image(self, win, image) :
+        win.image_display(image)
 
-    ####  OVERWRITING REAL FUNCTION
-    def mousePressEvent(self, QmouseEvent) :
-        
-        if self.recording_screen == 0 :
-            
-            self.screen_timer.stop()
-            self.screen_saver_on = 0
-            self.start_timer(self.screen_timer, self.screen_wait_time)
-            self.screen_saver_timeout()
-            self.wid3.hide()
-    
+
     def screen_saver_timeout(self) :
         x = 0
         if self.screen_saver_on == 1 :
@@ -134,6 +136,20 @@ class Example(QMainWindow):
     def widget_swap(self, show, hide) :
         show.show()
         hide.hide()
+
+
+
+    """  OVERWRITING REAL FUNCTION """
+    
+    def mousePressEvent(self, QmouseEvent) :
+        
+        if self.recording_screen == 0 :
+            
+            self.screen_timer.stop()
+            self.screen_saver_on = 0
+            self.start_timer(self.screen_timer, self.screen_wait_time)
+            self.screen_saver_timeout()
+            self.wid3.hide()
 
 
 
@@ -191,6 +207,7 @@ class Example(QMainWindow):
                               )
 
          button.clicked.connect(self.widget_hide)
+         #button.clicked.connect(self.ex1_change_image)
 
          if name == 'Z' :
             grid.addWidget(button, 6, 3)
@@ -214,7 +231,7 @@ class Example2(QMainWindow):
         super().__init__()
         
         self.setGeometry(300, 300, 300, 200)
-        self.choose_window(1)
+        self.choose_window(0)
         self.show()
 
 
@@ -237,6 +254,9 @@ class Example2(QMainWindow):
         label.show()
         label.resize(self.width() ,self.height())
 
+    def display_window(self) :
+        self.show()
+
 
 
 class Example3(QMainWindow):
@@ -245,7 +265,7 @@ class Example3(QMainWindow):
         super().__init__()
         self.setGeometry(300, 300, 300, 200)
         
-        self.choose_window(2)
+        self.choose_window(1)
         
         self.show()
 
@@ -275,14 +295,12 @@ def main():
 
     app = QApplication(sys.argv)
     ex = Example()
-    ex2 = Example2()
-    ex3 = Example3()
+    
     Mic = Microphone_Record()
 
     
 
-    ex2.image_display(spectrogram)
-    ex3.image_display(spectrogram)
+    
     Mic.record()
 
     sys.exit(app.exec_())
