@@ -17,6 +17,7 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 """
 
 import sys, string
+from threading import Thread
 from PyQt5.QtWidgets import (QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
@@ -39,9 +40,9 @@ class Example(QMainWindow):
         self.recording_screen = 0
         self.screen_saver_on = 0
 
-        milli = 1000
-        self.screen_wait_time = 5 * milli
-        self.timer_wait_time = 20 * milli
+        self.milli = 1000
+        self.screen_wait_time = 5 * self.milli
+        self.timer_wait_time = 20 * self.milli
     
         self.choose_window(0)
 
@@ -50,6 +51,10 @@ class Example(QMainWindow):
         self.central_wid = QWidget()
         self.ex2 = Example2()
         self.ex3 = Example3()
+        self.Mic = Microphone_Record()
+        self.t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
+        test = self.t.is_alive()
+        
 
         self.ex2.image_display('Mel_no_border.jpeg')
         self.ex3.image_display('Mel_no_border.jpeg')
@@ -100,11 +105,15 @@ class Example(QMainWindow):
             self.widget_swap(self.wid2, self.wid)
             self.ex1_change_image(self.ex2, 'smiley.jpg')
             self.ex1_change_image(self.ex3, 'smiley.jpg')
+            test = self.t.is_alive()
+            self.t.start()
+            #self.t = Thread(self.Mic.record(self.timer_wait_time/self.milli))
+            test = self.t.is_alive()
             self.recording_screen = 1
             self.main_widget = 1         
             
         else :
-
+            test = self.t.is_alive()
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
@@ -296,12 +305,12 @@ def main():
     app = QApplication(sys.argv)
     ex = Example()
     
-    Mic = Microphone_Record()
+    #Mic = Microphone_Record()
 
     
 
     
-    Mic.record()
+    #Mic.record()
 
     sys.exit(app.exec_())
 

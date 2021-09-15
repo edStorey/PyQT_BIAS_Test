@@ -13,7 +13,7 @@ class Microphone_Record :
     audio = pyaudio.PyAudio()
 
 
-    def record(self):
+    def record(self, RECORD_SECONDS = 4 ):
 
 
         # Setup channel info
@@ -21,8 +21,8 @@ class Microphone_Record :
         CHANNELS = 1 # Adjust to your number of channels
         RATE = 22050 # Sample Rate
         CHUNK = 1024 # Block Size
-        RECORD_SECONDS = 4 # Record time
-        WAVE_OUTPUT_FILENAME = "file.wav"
+        #RECORD_SECONDS = 4 # Record time
+        WAVE_OUTPUT_FILENAME = "voice_recording.wav"
         INPUT_DEVICE_INDEX = 1
 
         # Startup pyaudio instance
