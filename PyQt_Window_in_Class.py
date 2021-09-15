@@ -283,7 +283,7 @@ def main():
 
     ex2.image_display(spectrogram)
     ex3.image_display(spectrogram)
-    Mic.record()
+    #Mic.record()
 
     sys.exit(app.exec_())
 
