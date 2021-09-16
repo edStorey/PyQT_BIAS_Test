@@ -88,7 +88,7 @@ class Example(QMainWindow):
         self.set_central_widget([self.wid3, self.wid, self.wid4, self.wid2], self.central_wid)
         
 
-        self.ex2.image_display('Cormac_stuff/unscaled_human.png')
+        self.ex2.image_display('Waiting.jpg')
         self.ex3.image_display('Waiting.jpg')
         self.ex4.image_display('Waiting.jpg')
         self.ex5.image_display('Waiting.jpg')
@@ -119,10 +119,10 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.voice_gif.start()
             self.widget_swap(self.wid4, self.wid)
-            self.ex1_change_image(self.ex2, 'Cormac_stuff/unscaled_human.png')
-            self.ex1_change_image(self.ex3, 'smiley.jpg')
-            self.ex1_change_image(self.ex4, 'smiley.jpg')
-            self.ex1_change_image(self.ex5, 'smiley.jpg')
+            self.ex1_change_image(self.ex2, 'Listening.jpeg')
+            self.ex1_change_image(self.ex3, 'Listening.jpeg')
+            self.ex1_change_image(self.ex4, 'Listening.jpeg')
+            self.ex1_change_image(self.ex5, 'Listening.jpeg')
             t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             t.start()
             self.recording_screen = 1
@@ -134,7 +134,7 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
             self.widget_swap(self.wid2, self.wid4)
-            self.ex1_change_image(self.ex2, 'Cormac_stuff/unscaled_human.png')
+            self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
