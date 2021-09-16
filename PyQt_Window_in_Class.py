@@ -55,34 +55,27 @@ class Example(QMainWindow):
         self.central_wid = QWidget()
         self.ex2 = Example2()
         self.ex3 = Example3()
+        self.ex4 = Example4()
+        self.ex5 = Example5()
         self.Mic = Microphone_Record()
 
 
-        self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
+        self.wid, self.wid2, self.wid3, self.wid4 = QWidget(self), QWidget(self), QWidget(self), QWidget(self)
         grid1, grid2, grid3, grid4 = QGridLayout(), QGridLayout(), QGridLayout(), QGridLayout()    
-        label, label2 = QLabel(self), QLabel(self)
+        label, label2, label3 = QLabel(self), QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')
+        self.original, self.gif_screen, self.voice_gif = QMovie('timer.gif'), QMovie('download-percentage.gif'), QMovie('recording_gif.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
-        for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3]] :
+        for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3], [self.wid4, grid4]] :
             self.create_layouts(layout[0], layout[1], Rect)
             
 
-        #label.resize(self.width() ,self.height())
-        #label2.resize(self.width() ,self.height())
-        #label.showFullScreen()
-        #label2.showFullScreen()
-        test = label.size()
-        test2 = label2.size()
-        
-        #label.setStyleSheet("QLabel {border: 0px;}")
-        #label2.setStyleSheet("QLabel {border: 0px;}")
-        
-
         self.add_movie(label, grid2, self.original)
+        self.add_movie(label3, grid4, self.voice_gif)
         self.add_movie(label2, grid3, self.gif_screen)
+        
         
 
         self.set_button_layout(grid1)
@@ -92,11 +85,13 @@ class Example(QMainWindow):
         self.timer.timeout.connect(self.widget_hide)
         
 
-        self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
+        self.set_central_widget([self.wid3, self.wid, self.wid4, self.wid2], self.central_wid)
         
 
-        self.ex2.image_display('Mel_no_border.jpeg')
-        self.ex3.image_display('Mel_no_border.jpeg')
+        self.ex2.image_display('Cormac_stuff/unscaled_human.png')
+        self.ex3.image_display('Waiting.jpg')
+        self.ex4.image_display('Waiting.jpg')
+        self.ex5.image_display('Waiting.jpg')
 
 
         self.setStyleSheet("background-color: rgb(224,204,160);")
@@ -105,6 +100,7 @@ class Example(QMainWindow):
 
         self.wid.hide()
         self.wid2.hide()
+        self.wid4.hide()
         self.wid3.show()
         self.gif_screen.start()
         
@@ -121,22 +117,41 @@ class Example(QMainWindow):
 
             self.screen_timer.stop()
             self.start_timer(self.timer, self.timer_wait_time)
-            self.original.start()
-            self.widget_swap(self.wid2, self.wid)
-            self.ex1_change_image(self.ex2, 'smiley.jpg')
+            self.voice_gif.start()
+            self.widget_swap(self.wid4, self.wid)
+            self.ex1_change_image(self.ex2, 'Cormac_stuff/unscaled_human.png')
             self.ex1_change_image(self.ex3, 'smiley.jpg')
+            self.ex1_change_image(self.ex4, 'smiley.jpg')
+            self.ex1_change_image(self.ex5, 'smiley.jpg')
             t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             t.start()
             self.recording_screen = 1
-            self.main_widget = 1         
+            self.main_widget = 1 
+        elif self.main_widget == 1 :
+    
+            self.screen_timer.stop()
+            self.voice_gif.stop()
+            self.start_timer(self.timer, self.timer_wait_time)
+            self.original.start()
+            self.widget_swap(self.wid2, self.wid4)
+            self.ex1_change_image(self.ex2, 'Cormac_stuff/unscaled_human.png')
+            self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
+            #t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
+            #t.start()
+            self.recording_screen = 1
+            self.main_widget = 2        
             
         else :
             
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
-            self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex2, 'Waiting.jpg')
+            self.ex1_change_image(self.ex3, 'Waiting.jpg')
+            self.ex1_change_image(self.ex4, 'Waiting.jpg')
+            self.ex1_change_image(self.ex5, 'Waiting.jpg')
             self.recording_screen = 0
             self.main_widget = 0 
 
@@ -201,20 +216,7 @@ class Example(QMainWindow):
     def add_movie(self, label, grid, movie) :
         label.setMovie(movie)
 
-        #rect = self.geometry()
-        #size = QSize(max(rect.width(), rect.height()), min(rect.width(), rect.height()))
-
-        #movie = self.label.movie()
-        #movie.setScaledSize(size)
-        #label.setMovie(movie)
-        
-        
-        #label.setStyleSheet("QLabel {border: 0px;}")
-        #label.setFrameShape(QFrame.HLine);
-        #label.setFrameStyle(QFrame.NoFrame)
         label.setScaledContents(True)
-        #label.setStyleSheet("QLabel {border: 0px;}")
-        #self.original.setScaledSize()
         grid.addWidget(label)
 
 
@@ -281,7 +283,7 @@ class Example2(QMainWindow):
         super().__init__()
         
         self.setGeometry(300, 300, 300, 200)
-        self.choose_window(0)
+        self.choose_window(1)
         self.show()
 
 
@@ -315,7 +317,71 @@ class Example3(QMainWindow):
         super().__init__()
         self.setGeometry(300, 300, 300, 200)
         
-        self.choose_window(1)
+        self.choose_window(2)
+        
+        self.show()
+
+    def image_display(self, image) :
+
+        label = QLabel(self)
+        orignal = QPixmap(image)
+        Rect = QRect(int(orignal.width()/2)+1,0,int(orignal.width()/2),orignal.height())
+        cropped = QPixmap(orignal.copy(Rect))
+        label.setPixmap(cropped.scaledToWidth(self.width()))
+        label.setScaledContents(True)
+
+        label.move(0, 0)
+        label.show()
+        label.resize(self.width(),self.height())
+
+    def choose_window(self,  window) :
+        monitor = QDesktopWidget().screenGeometry(window)
+        self.move(monitor.left(), monitor.top())
+        self.showFullScreen()
+
+
+
+class Example4(QMainWindow):
+    
+    def __init__(self):
+        super().__init__()
+        
+        self.setGeometry(300, 300, 300, 200)
+        self.choose_window(3)
+        self.show()
+
+
+    def choose_window(self,  window) :
+        monitor = QDesktopWidget().screenGeometry(window)
+        self.move(monitor.left(), monitor.top())
+        self.showFullScreen()
+
+
+    def image_display(self, image) :
+
+        label = QLabel(self)
+        orignal = QPixmap(image)
+        Rect = QRect(0,0,int(orignal.width()/2),orignal.height())
+        cropped = QPixmap(orignal.copy(Rect))
+        label.setPixmap(cropped.scaledToWidth(self.width()))
+        label.setScaledContents(True)
+        
+        label.move(0, 0)
+        label.show()
+        label.resize(self.width() ,self.height())
+
+    def display_window(self) :
+        self.show()
+
+
+
+class Example5(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.setGeometry(300, 300, 300, 200)
+        
+        self.choose_window(4)
         
         self.show()
 
