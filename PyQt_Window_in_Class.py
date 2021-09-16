@@ -18,11 +18,11 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 
 import sys, string
 from threading import Thread
-from PyQt5.QtWidgets import (QWidget, QGridLayout,
+from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
 
-from PyQt5.QtCore import QRect, QTimer
+from PyQt5.QtCore import QRect, QTimer, QSize
 
 from Microphone_Record import Microphone_Record
 
@@ -35,6 +35,8 @@ class Example(QMainWindow):
 
     def initUI(self):
 
+        
+
 
         self.main_widget  = 0
         self.recording_screen = 0
@@ -46,32 +48,42 @@ class Example(QMainWindow):
     
         self.choose_window(0)
 
+        
+
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
         self.ex2 = Example2()
         self.ex3 = Example3()
         self.Mic = Microphone_Record()
-        #self.t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
-        
-
-        self.ex2.image_display('Mel_no_border.jpeg')
-        self.ex3.image_display('Mel_no_border.jpeg')
 
 
         self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
-        grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout()  
+        grid1, grid2, grid3, grid4 = QGridLayout(), QGridLayout(), QGridLayout(), QGridLayout()    
         label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
         self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
+        
         for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3]] :
             self.create_layouts(layout[0], layout[1], Rect)
+            
 
+        #label.resize(self.width() ,self.height())
+        #label2.resize(self.width() ,self.height())
+        #label.showFullScreen()
+        #label2.showFullScreen()
+        test = label.size()
+        test2 = label2.size()
+        
+        #label.setStyleSheet("QLabel {border: 0px;}")
+        #label2.setStyleSheet("QLabel {border: 0px;}")
+        
 
         self.add_movie(label, grid2, self.original)
         self.add_movie(label2, grid3, self.gif_screen)
+        
 
         self.set_button_layout(grid1)
 
@@ -81,9 +93,15 @@ class Example(QMainWindow):
         
 
         self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
+        
+
+        self.ex2.image_display('Mel_no_border.jpeg')
+        self.ex3.image_display('Mel_no_border.jpeg')
 
 
         self.setStyleSheet("background-color: rgb(224,204,160);")
+
+
 
         self.wid.hide()
         self.wid2.hide()
@@ -107,10 +125,8 @@ class Example(QMainWindow):
             self.widget_swap(self.wid2, self.wid)
             self.ex1_change_image(self.ex2, 'smiley.jpg')
             self.ex1_change_image(self.ex3, 'smiley.jpg')
-            #test = t.is_alive()
             t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             t.start()
-            test = t.is_alive()
             self.recording_screen = 1
             self.main_widget = 1         
             
@@ -169,18 +185,36 @@ class Example(QMainWindow):
     def choose_window(self,  window) :
         monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
+        self.resize(monitor.width(), monitor.height())
 
         self.showFullScreen()
 
 
     def create_layouts(self, widget, grid, rect) :
+        ## set contents margin get rid of default margin on grids and sets to 0
+        grid.setContentsMargins(0,0,0,0)
         widget.setLayout(grid)
         widget.setGeometry(rect)
+        widget.showFullScreen()
 
 
     def add_movie(self, label, grid, movie) :
         label.setMovie(movie)
+
+        #rect = self.geometry()
+        #size = QSize(max(rect.width(), rect.height()), min(rect.width(), rect.height()))
+
+        #movie = self.label.movie()
+        #movie.setScaledSize(size)
+        #label.setMovie(movie)
+        
+        
+        #label.setStyleSheet("QLabel {border: 0px;}")
+        #label.setFrameShape(QFrame.HLine);
+        #label.setFrameStyle(QFrame.NoFrame)
         label.setScaledContents(True)
+        #label.setStyleSheet("QLabel {border: 0px;}")
+        #self.original.setScaledSize()
         grid.addWidget(label)
 
 
@@ -311,13 +345,6 @@ def main():
 
     app = QApplication(sys.argv)
     ex = Example()
-    
-    #Mic = Microphone_Record()
-
-    
-
-    
-    #Mic.record()
 
     sys.exit(app.exec_())
 
