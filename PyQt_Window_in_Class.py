@@ -52,8 +52,7 @@ class Example(QMainWindow):
         self.ex2 = Example2()
         self.ex3 = Example3()
         self.Mic = Microphone_Record()
-        self.t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
-        test = self.t.is_alive()
+        #self.t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
         
 
         self.ex2.image_display('Mel_no_border.jpeg')
@@ -83,6 +82,9 @@ class Example(QMainWindow):
 
         self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
 
+
+        self.setStyleSheet("background-color: rgb(224,204,160);")
+
         self.wid.hide()
         self.wid2.hide()
         self.wid3.show()
@@ -105,15 +107,15 @@ class Example(QMainWindow):
             self.widget_swap(self.wid2, self.wid)
             self.ex1_change_image(self.ex2, 'smiley.jpg')
             self.ex1_change_image(self.ex3, 'smiley.jpg')
-            test = self.t.is_alive()
-            self.t.start()
-            #self.t = Thread(self.Mic.record(self.timer_wait_time/self.milli))
-            test = self.t.is_alive()
+            #test = t.is_alive()
+            t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
+            t.start()
+            test = t.is_alive()
             self.recording_screen = 1
             self.main_widget = 1         
             
         else :
-            test = self.t.is_alive()
+            
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
@@ -201,18 +203,23 @@ class Example(QMainWindow):
         for position, name in zip(positions, names):
          button = QPushButton(name)
          button.setMinimumSize(int(self.wid.width()/7),int(self.wid.height()/8))
-         button.setStyleSheet("QPushButton { color: red ;"
+         button.setStyleSheet("QPushButton { "
+                              #"color: rgb(127,84,23) ;"
+                              "color: black ;"
+                              "border-color: rgb(214,163,84) ;"
                               "border-style: outset;"
                               "border-radius: 40px;"
-                              "background-color: yellow;"
-                              "selection-color: red ;"
-                              "selection-background-color: blue;"
+                              "background-color: green;"
+                              "background-color: rgb(224,204,151);" ### Beige
+                              #"selection-color: red ;"
+                              #"selection-background-color: teal;"
                               "border-width: 2px;"
-                              "border-color: green;"
+                              #"border-color: green;"
                               "font: bold 14px;"
                               "padding: 6px; }"
-                              "QPushButton::hover { background-color: green }"
-                              "QPushButton::pressed { background-color: blue }"
+                              #"QPushButton::hover { background-color: green }"
+                              #"QPushButton::pressed { background-color: teal }"
+                              "QPushButton::pressed { background-color: rgb(225,179,120) }"
                               )
 
          button.clicked.connect(self.widget_hide)
