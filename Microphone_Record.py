@@ -88,7 +88,8 @@ class Microphone_Record :
         return trimmed_sound
 
 
-    def get_device_list(self, audio) :
+    def get_device_list(self) :
+        audio = self.pyaudio.PyAudio()
         dev_count = audio.get_device_count()
         dev_list = []
 

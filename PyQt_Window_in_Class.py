@@ -59,6 +59,8 @@ class Example(QMainWindow):
         self.ex5 = Example5()
         self.Mic = Microphone_Record()
 
+        List = self.Mic.get_device_list()
+
 
         self.wid, self.wid2, self.wid3, self.wid4 = QWidget(self), QWidget(self), QWidget(self), QWidget(self)
         grid1, grid2, grid3, grid4 = QGridLayout(), QGridLayout(), QGridLayout(), QGridLayout()    
@@ -198,6 +200,8 @@ class Example(QMainWindow):
     """"  INIT FUNCTIONS   """
 
     def choose_window(self,  window) :
+        test = QDesktopWidget().screenCount()
+
         monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
         self.resize(monitor.width(), monitor.height())
