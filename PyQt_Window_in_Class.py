@@ -96,7 +96,8 @@ class Example(QMainWindow):
         self.ex5.image_display('Waiting.jpg')
 
 
-        self.setStyleSheet("background-color: rgb(224,204,160);")
+        ###  BEIGE ###   self.setStyleSheet("background-color: rgb(224,204,160);")
+        self.setStyleSheet("background-color: #152238;")
 
 
 
@@ -105,6 +106,8 @@ class Example(QMainWindow):
         self.wid4.hide()
         self.wid3.show()
         self.gif_screen.start()
+
+        
         
 
         self.show()
@@ -186,6 +189,30 @@ class Example(QMainWindow):
     """  OVERWRITING REAL FUNCTION """
     
     def mousePressEvent(self, QmouseEvent) :
+
+        self.stopScreenTimer()
+
+
+    def mouseReleaseEvent(self, QmouseEvent):
+
+        self.startScreenTimer()
+
+
+    def stopScreenTimer(self) :
+        
+        if self.recording_screen == 0 :
+
+            #self.start_timer(self.screen_timer, self.screen_wait_time)
+            self.screen_timer.setSingleShot(False)
+            self.screen_timer.stop()
+            self.screen_saver_on = 0
+            #self.start_timer(self.screen_timer, self.screen_wait_time)
+            #self.screen_saver_timeout()
+            self.widget_swap(self.wid, self.wid3)
+            self.wid3.hide()
+
+
+    def startScreenTimer(self) :
         
         if self.recording_screen == 0 :
             
@@ -194,6 +221,7 @@ class Example(QMainWindow):
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.screen_saver_timeout()
             self.wid3.hide()
+
 
 
 
@@ -245,12 +273,14 @@ class Example(QMainWindow):
          button.setMinimumSize(int(self.wid.width()/7),int(self.wid.height()/8))
          button.setStyleSheet("QPushButton { "
                               #"color: rgb(127,84,23) ;"
-                              "color: black ;"
-                              "border-color: rgb(214,163,84) ;"
+                              "color: #FF007F ;"
+                              #"border-color: rgb(214,163,84) ;"
+                              "border-color: #09f8fb ;"
                               "border-style: outset;"
                               "border-radius: 40px;"
                               "background-color: green;"
-                              "background-color: rgb(224,204,151);" ### Beige
+                              #"background-color: rgb(224,204,151);" ### Beige
+                              "background-color: rgb(255,255,255, 0);"
                               #"selection-color: red ;"
                               #"selection-background-color: teal;"
                               "border-width: 2px;"
@@ -259,10 +289,13 @@ class Example(QMainWindow):
                               "padding: 6px; }"
                               #"QPushButton::hover { background-color: green }"
                               #"QPushButton::pressed { background-color: teal }"
-                              "QPushButton::pressed { background-color: rgb(225,179,120) }"
+                              #"QPushButton::pressed { background-color: rgb(225,179,120) }"
+                              "QPushButton::pressed { background-color: rgb(225,255,255, 25) }"
                               )
 
          button.clicked.connect(self.widget_hide)
+         button.pressed.connect(self.stopScreenTimer)
+         button.released.connect(self.startScreenTimer)
          #button.clicked.connect(self.ex1_change_image)
 
          if name == 'Z' :
