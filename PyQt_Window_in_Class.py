@@ -17,14 +17,16 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 """
 
 import sys, string
-from threading import Thread
+#from threading import Thread
 from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
 
+
+
 from PyQt5.QtCore import QRect, QTimer, QSize
 
-from Microphone_Record import Microphone_Record
+#from Microphone_Record import Microphone_Record
 
 class Example(QMainWindow):
 
@@ -39,7 +41,7 @@ class Example(QMainWindow):
 
 
         self.main_widget  = 0
-        self.recording_screen = 0
+        #self.recording_screen = 0
         self.screen_saver_on = 0
 
         self.milli = 1000
@@ -57,25 +59,24 @@ class Example(QMainWindow):
         self.ex3 = Example3()
         self.ex4 = Example4()
         self.ex5 = Example5()
-        self.Mic = Microphone_Record()
-
-        List = self.Mic.get_device_list()
+        #self.Mic = Microphone_Record()
 
 
-        self.wid, self.wid2, self.wid3, self.wid4 = QWidget(self), QWidget(self), QWidget(self), QWidget(self)
-        grid1, grid2, grid3, grid4 = QGridLayout(), QGridLayout(), QGridLayout(), QGridLayout()    
-        label, label2, label3 = QLabel(self), QLabel(self), QLabel(self)
+
+        self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
+        grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
+        label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen, self.voice_gif = QMovie('timer.gif'), QMovie('download-percentage.gif'), QMovie('recording_gif.gif')
+        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')#, QMovie('recording_gif.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
-        for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3], [self.wid4, grid4]] :
+        for layout in [[self.wid, grid1], [self.wid2, grid2], [self.wid3, grid3]] :
             self.create_layouts(layout[0], layout[1], Rect)
             
 
         self.add_movie(label, grid2, self.original)
-        self.add_movie(label3, grid4, self.voice_gif)
+        #self.add_movie(label3, grid4, self.voice_gif)
         self.add_movie(label2, grid3, self.gif_screen)
         
         
@@ -87,7 +88,7 @@ class Example(QMainWindow):
         self.timer.timeout.connect(self.widget_hide)
         
 
-        self.set_central_widget([self.wid3, self.wid, self.wid4, self.wid2], self.central_wid)
+        self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
         
 
         self.ex2.image_display('Waiting.jpg')
@@ -103,7 +104,7 @@ class Example(QMainWindow):
 
         self.wid.hide()
         self.wid2.hide()
-        self.wid4.hide()
+        #self.wid4.hide()
         self.wid3.show()
         self.gif_screen.start()
 
@@ -118,35 +119,36 @@ class Example(QMainWindow):
     """"FUNCTIONAL FUNCTIONS"""
 
     def widget_hide(self) :
-        if self.main_widget == 0 :
+        # if self.main_widget == 0 :
 
-            self.screen_timer.stop()
-            self.start_timer(self.timer, self.timer_wait_time)
-            self.voice_gif.start()
-            self.widget_swap(self.wid4, self.wid)
-            self.ex1_change_image(self.ex2, 'Listening.jpeg')
-            self.ex1_change_image(self.ex3, 'Listening.jpeg')
-            self.ex1_change_image(self.ex4, 'Listening.jpeg')
-            self.ex1_change_image(self.ex5, 'Listening.jpeg')
-            t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
-            t.start()
-            self.recording_screen = 1
-            self.main_widget = 1 
-        elif self.main_widget == 1 :
+        #     self.screen_timer.stop()
+        #     self.start_timer(self.timer, self.timer_wait_time)
+        #     self.voice_gif.start()
+        #     self.widget_swap(self.wid4, self.wid)
+        #     self.ex1_change_image(self.ex2, 'Listening.jpeg')
+        #     self.ex1_change_image(self.ex3, 'Listening.jpeg')
+        #     self.ex1_change_image(self.ex4, 'Listening.jpeg')
+        #     self.ex1_change_image(self.ex5, 'Listening.jpeg')
+        #     t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
+        #     t.start()
+        #     self.recording_screen = 1
+        #     self.main_widget = 1 
+        # el
+        if self.main_widget == 0 :
     
             self.screen_timer.stop()
-            self.voice_gif.stop()
+            #self.voice_gif.stop()
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
-            self.widget_swap(self.wid2, self.wid4)
+            self.widget_swap(self.wid2, self.wid)
             self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
             #t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             #t.start()
-            self.recording_screen = 1
-            self.main_widget = 2        
+            #self.recording_screen = 1
+            self.main_widget = 1        
             
         else :
             
@@ -157,7 +159,7 @@ class Example(QMainWindow):
             self.ex1_change_image(self.ex3, 'Waiting.jpg')
             self.ex1_change_image(self.ex4, 'Waiting.jpg')
             self.ex1_change_image(self.ex5, 'Waiting.jpg')
-            self.recording_screen = 0
+            #self.recording_screen = 0
             self.main_widget = 0 
 
     def ex1_change_image(self, win, image) :
@@ -200,7 +202,7 @@ class Example(QMainWindow):
 
     def stopScreenTimer(self) :
         
-        if self.recording_screen == 0 :
+        if self.main_widget == 0 :
 
             #self.start_timer(self.screen_timer, self.screen_wait_time)
             self.screen_timer.setSingleShot(False)
@@ -214,7 +216,7 @@ class Example(QMainWindow):
 
     def startScreenTimer(self) :
         
-        if self.recording_screen == 0 :
+        if self.main_widget == 0 :
             
             self.screen_timer.stop()
             self.screen_saver_on = 0
