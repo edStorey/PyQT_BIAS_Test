@@ -67,7 +67,7 @@ class Example(QMainWindow):
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
         label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen = QMovie('timer.gif'), QMovie('download-percentage.gif')#, QMovie('recording_gif.gif')
+        self.original, self.gif_screen = QMovie('wavesignal.gif'), QMovie('smoke.gif')#, QMovie('recording_gif.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
@@ -267,12 +267,22 @@ class Example(QMainWindow):
         alphabet_string = string.ascii_uppercase
         names = list(alphabet_string)
 
-        ### CREATE WIDGET LAYOUT
-        positions = [(i, j) for i in range(1,7) for j in range(1,6)]
+        Utterances_List = [ "I can't hear you",
+                            "Am I breathing",
+                            "The data is corrupted",
+                            "I can detect fluctuations",
+                            "What does it mean",
+                            "I sound strange",
+                            "This is alien",
+                            "Breathing, a tortuous task",
+                            "Breathing, essential to life" ]
 
-        for position, name in zip(positions, names):
+        ### CREATE WIDGET LAYOUT
+        positions = [(i, j) for i in range(1,4) for j in range(1,4)]
+
+        for position, name in zip(positions, Utterances_List):
          button = QPushButton(name)
-         button.setMinimumSize(int(self.wid.width()/7),int(self.wid.height()/8))
+         button.setMinimumSize(int(self.wid.width()/4),int(self.wid.height()/4))
          button.setStyleSheet("QPushButton { "
                               #"color: rgb(127,84,23) ;"
                               "color: #FF007F ;"
@@ -287,7 +297,7 @@ class Example(QMainWindow):
                               #"selection-background-color: teal;"
                               "border-width: 2px;"
                               #"border-color: green;"
-                              "font: bold 14px;"
+                              "font: bold 33px;"
                               "padding: 6px; }"
                               #"QPushButton::hover { background-color: green }"
                               #"QPushButton::pressed { background-color: teal }"
