@@ -55,10 +55,8 @@ class Example(QMainWindow):
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
-        self.ex2 = Example2()
-        self.ex3 = Example3()
-        self.ex4 = Example4()
-        self.ex5 = Example5()
+        self.ex2, self.ex4 = Example2(), Example2()
+        self.ex3, self.ex5 = Example3(), Example3()
         #self.Mic = Microphone_Record()
 
 
@@ -390,67 +388,7 @@ class Example3(QMainWindow):
 
 
 
-class Example4(QMainWindow):
-    
-    def __init__(self):
-        super().__init__()
-        
-        self.setGeometry(300, 300, 300, 200)
-        self.choose_window(3)
-        self.show()
 
-
-    def choose_window(self,  window) :
-        monitor = QDesktopWidget().screenGeometry(window)
-        self.move(monitor.left(), monitor.top())
-        self.showFullScreen()
-
-
-    def image_display(self, image) :
-
-        label = QLabel(self)
-        orignal = QPixmap(image)
-        Rect = QRect(0,0,int(orignal.width()/2),orignal.height())
-        cropped = QPixmap(orignal.copy(Rect))
-        label.setPixmap(cropped.scaledToWidth(self.width()))
-        label.setScaledContents(True)
-        
-        label.move(0, 0)
-        label.show()
-        label.resize(self.width() ,self.height())
-
-    def display_window(self) :
-        self.show()
-
-
-
-class Example5(QMainWindow):
-
-    def __init__(self):
-        super().__init__()
-        self.setGeometry(300, 300, 300, 200)
-        
-        self.choose_window(4)
-        
-        self.show()
-
-    def image_display(self, image) :
-
-        label = QLabel(self)
-        orignal = QPixmap(image)
-        Rect = QRect(int(orignal.width()/2)+1,0,int(orignal.width()/2),orignal.height())
-        cropped = QPixmap(orignal.copy(Rect))
-        label.setPixmap(cropped.scaledToWidth(self.width()))
-        label.setScaledContents(True)
-
-        label.move(0, 0)
-        label.show()
-        label.resize(self.width(),self.height())
-
-    def choose_window(self,  window) :
-        monitor = QDesktopWidget().screenGeometry(window)
-        self.move(monitor.left(), monitor.top())
-        self.showFullScreen()
 
 
 
