@@ -27,7 +27,7 @@ from PyQt5.QtGui import QPixmap, QMovie
 from PyQt5.QtCore import QRect, QTimer, QSize, Qt
 
 class Example(QMainWindow):
-
+    
     def __init__(self):
         super().__init__()
 
@@ -51,6 +51,8 @@ class Example(QMainWindow):
         self.milli = 1000
         self.screen_wait_time = 5 * self.milli
         self.timer_wait_time = 20 * self.milli
+
+        self.idle_animation = "Idle-Loop-LR-5s.gif"
     
         self.choose_window(0)
 
@@ -96,9 +98,9 @@ class Example(QMainWindow):
         self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
         
 
-        self.ex2.image_display('Waiting.jpg')
+        self.ex2.image_display(self.idle_animation)
         #self.ex3.image_display('Waiting.jpg')
-        self.ex4.image_display('Waiting.jpg')
+        self.ex4.image_display(self.idle_animation)
         #self.ex5.image_display('Waiting.jpg')
 
 
@@ -161,9 +163,9 @@ class Example(QMainWindow):
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
-            self.ex1_change_image(self.ex2, 'Waiting.jpg')
+            self.ex1_change_image(self.ex2, self.idle_animation)
             #self.ex1_change_image(self.ex3, 'Waiting.jpg')
-            self.ex1_change_image(self.ex4, 'Waiting.jpg')
+            self.ex1_change_image(self.ex4, self.idle_animation)
             #self.ex1_change_image(self.ex5, 'Waiting.jpg')
             #self.recording_screen = 0
             self.main_widget = 0 
