@@ -96,7 +96,8 @@ class Example(QMainWindow):
 
 
         ###  BEIGE ###   self.setStyleSheet("background-color: rgb(224,204,160);")
-        self.setStyleSheet("background-color: #152238;")
+        #self.setStyleSheet("background-color: #152238;")
+        self.setStyleSheet("background-color: white;")
 
 
 
@@ -266,10 +267,10 @@ class Example(QMainWindow):
         names = list(alphabet_string)
 
         Utterances_List = [ "I can't hear you",
-                            "Am I breathing",
+                            "Am I breathing?",
                             "The data is corrupted",
                             "I can detect fluctuations",
-                            "What does it mean",
+                            "What does it mean?",
                             "I sound strange",
                             "This is alien",
                             "Breathing, a tortuous task",
@@ -283,9 +284,11 @@ class Example(QMainWindow):
          button.setMinimumSize(int(self.wid.width()/4),int(self.wid.height()/4))
          button.setStyleSheet("QPushButton { "
                               #"color: rgb(127,84,23) ;"
-                              "color: #FF007F ;"
+                              #"color: #FF007F ;"
+                              "color: black ;"
                               #"border-color: rgb(214,163,84) ;"
                               "border-color: #09f8fb ;"
+                              "border-color: black ;"
                               "border-style: outset;"
                               "border-radius: 40px;"
                               "background-color: green;"
@@ -300,7 +303,7 @@ class Example(QMainWindow):
                               #"QPushButton::hover { background-color: green }"
                               #"QPushButton::pressed { background-color: teal }"
                               #"QPushButton::pressed { background-color: rgb(225,179,120) }"
-                              "QPushButton::pressed { background-color: rgb(225,255,255, 25) }"
+                              "QPushButton::pressed { background-color: rgb(0,0,0, 25) }"
                               )
 
          button.clicked.connect(self.widget_hide)
