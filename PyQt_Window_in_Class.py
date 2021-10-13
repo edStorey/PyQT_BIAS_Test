@@ -331,6 +331,8 @@ class Example2(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
+        self.label = QLabel(self)
         
         self.setGeometry(300, 300, 300, 200)
         self.choose_window(1)
@@ -345,16 +347,39 @@ class Example2(QMainWindow):
 
     def image_display(self, image) :
 
-        label = QLabel(self)
-        orignal = QPixmap(image)
-        Rect = QRect(0,0,int(orignal.width()/2),orignal.height())
-        cropped = QPixmap(orignal.copy(Rect))
-        label.setPixmap(cropped.scaledToWidth(self.width()))
-        label.setScaledContents(True)
+        self.label.clear()
         
-        label.move(0, 0)
-        label.show()
-        label.resize(self.width() ,self.height())
+        #orignal = QPixmap(image)
+        original = QMovie(image)
+        grid = QGridLayout()
+        Rect = QRect(0,0,int(self.width()),self.height())
+        #'layout in [[self.wid, grid1]
+        grid.setContentsMargins(0,0,0,0)
+        #self.create_layouts(layout[0], layout[1], Rect)
+        #cropped = QMovie(orignal.copy(Rect))
+        self.add_movie(self.label, grid, original)
+        #label.setPixmap(cropped.scaledToWidth(self.width()))
+        self.label.setScaledContents(True)
+        original.start()
+        
+        self.label.move(0, 0)
+        self.label.show()
+        self.label.resize(self.width() ,self.height())
+
+
+    def add_movie(self, label, grid, movie) :
+        label.setMovie(movie)
+
+        #label.setScaledContents(True)
+        #grid.addWidget(label)
+
+    def create_layouts(self, widget, grid, rect) :
+        ## set contents margin get rid of default margin on grids and sets to 0
+        grid.setContentsMargins(0,0,0,0)
+        widget.setLayout(grid)
+        widget.setGeometry(rect)
+        widget.showFullScreen()
+
 
     def display_window(self) :
         self.show()
