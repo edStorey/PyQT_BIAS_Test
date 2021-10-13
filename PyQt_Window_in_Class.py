@@ -33,6 +33,12 @@ class Example(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        # string value
+        title = "Main_Window"
+  
+        # set the title
+        self.setWindowTitle(title)
+
         self.initUI()
 
     def initUI(self):
@@ -56,6 +62,9 @@ class Example(QMainWindow):
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
         self.ex2, self.ex4 = Example2(), Example2()
+
+        self.ex2.setWindowTitle("Human_Voice")
+        self.ex4.setWindowTitle("Synthetic_Voice")
         #self.ex3, self.ex5 = Example3(), Example3()
         #self.Mic = Microphone_Record()
 
@@ -370,6 +379,9 @@ class Example2(QMainWindow):
         self.label.show()
         
         original.start()
+
+    def name_Window(self, name) :
+        self.setWindowTitle(name)
         
 
     def display_window(self) :
