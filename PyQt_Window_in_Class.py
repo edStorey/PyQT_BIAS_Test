@@ -74,7 +74,7 @@ class Example(QMainWindow):
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
         label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen = QMovie('wavesignal.gif'), QMovie('smoke.gif')#, QMovie('recording_gif.gif')
+        self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('smoke.gif')#, QMovie('recording_gif.gif')
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
