@@ -344,9 +344,7 @@ class Example2(QMainWindow):
         self.move(monitor.left(), monitor.top())
         width = 1600*2
         Height = 900
-
-        
-          
+   
         # setting  the fixed width of window
         self.setFixedWidth(width)
         self.setFixedHeight(Height)
@@ -360,56 +358,22 @@ class Example2(QMainWindow):
 
         self.label.clear()
 
-        #self.label.setFixedHeight(900)
-        #self.label.setFixedWidth(1600*2)
-        
-        #orignal = QPixmap(image)
+
         original = QMovie(image)
-        grid = QGridLayout()
-        Rect = QRect(0,0,int(self.width()),self.height())
-        #'layout in [[self.wid, grid1]
-        grid.setContentsMargins(0,0,0,0)
-        #self.create_layouts(layout[0], layout[1], Rect)
-        #cropped = QMovie(orignal.copy(Rect))
-        self.add_movie(self.label, grid, original)
-        #label.setPixmap(cropped.scaledToWidth(self.width()))
+        self.label.setMovie(original)
         self.label.setScaledContents(True)
         
-        #self.label.move(0, 0)
-        test_width = self.width()
-        test_height = self.height()
+       
         self.label.resize(self.width() ,self.height())
-        #self.label.adjustSize()
-        label_height = self.label.height()
-        label_width = self.label.width()
 
         
         self.label.show()
         
         original.start()
-        test = 1
         
-
-
-    def add_movie(self, label, grid, movie) :
-        label.setMovie(movie)
-
-        #label.setScaledContents(True)
-        #grid.addWidget(label)
-
-
 
     def display_window(self) :
         self.show()
-
-
-
-
-
-
-
-
-
 
 
 
