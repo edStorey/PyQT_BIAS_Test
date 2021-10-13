@@ -342,8 +342,8 @@ class Example2(QMainWindow):
     def choose_window(self,  window) :
         monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
-        width = 1600*2
-        Height = 900
+        width = 1280*2
+        Height = 800
    
         # setting  the fixed width of window
         self.setFixedWidth(width)
