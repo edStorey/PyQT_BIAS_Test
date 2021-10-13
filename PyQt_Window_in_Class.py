@@ -24,7 +24,7 @@ from PyQt5.QtGui import QPixmap, QMovie
 
 
 
-from PyQt5.QtCore import QRect, QTimer, QSize
+from PyQt5.QtCore import QRect, QTimer, QSize, Qt
 
 #from Microphone_Record import Microphone_Record
 
@@ -56,7 +56,7 @@ class Example(QMainWindow):
         self.layout_for_wids = QStackedLayout()
         self.central_wid = QWidget()
         self.ex2, self.ex4 = Example2(), Example2()
-        self.ex3, self.ex5 = Example3(), Example3()
+        #self.ex3, self.ex5 = Example3(), Example3()
         #self.Mic = Microphone_Record()
 
 
@@ -90,9 +90,9 @@ class Example(QMainWindow):
         
 
         self.ex2.image_display('Waiting.jpg')
-        self.ex3.image_display('Waiting.jpg')
+        #self.ex3.image_display('Waiting.jpg')
         self.ex4.image_display('Waiting.jpg')
-        self.ex5.image_display('Waiting.jpg')
+        #self.ex5.image_display('Waiting.jpg')
 
 
         ###  BEIGE ###   self.setStyleSheet("background-color: rgb(224,204,160);")
@@ -141,9 +141,9 @@ class Example(QMainWindow):
             self.original.start()
             self.widget_swap(self.wid2, self.wid)
             self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
+            #self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
+            #self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
             #t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             #t.start()
             #self.recording_screen = 1
@@ -155,9 +155,9 @@ class Example(QMainWindow):
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
             self.ex1_change_image(self.ex2, 'Waiting.jpg')
-            self.ex1_change_image(self.ex3, 'Waiting.jpg')
+            #self.ex1_change_image(self.ex3, 'Waiting.jpg')
             self.ex1_change_image(self.ex4, 'Waiting.jpg')
-            self.ex1_change_image(self.ex5, 'Waiting.jpg')
+            #self.ex1_change_image(self.ex5, 'Waiting.jpg')
             #self.recording_screen = 0
             self.main_widget = 0 
 
@@ -334,7 +334,7 @@ class Example2(QMainWindow):
 
         self.label = QLabel(self)
         
-        self.setGeometry(300, 300, 300, 200)
+        #self.setGeometry(300, 300, 300, 200)
         self.choose_window(1)
         self.show()
 
@@ -342,12 +342,26 @@ class Example2(QMainWindow):
     def choose_window(self,  window) :
         monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
-        self.showFullScreen()
+        width = 1600*2
+        Height = 900
+
+        
+          
+        # setting  the fixed width of window
+        self.setFixedWidth(width)
+        self.setFixedHeight(Height)
+        
+
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        #self.showFullScreen()
 
 
     def image_display(self, image) :
 
         self.label.clear()
+
+        #self.label.setFixedHeight(900)
+        #self.label.setFixedWidth(1600*2)
         
         #orignal = QPixmap(image)
         original = QMovie(image)
@@ -360,11 +374,21 @@ class Example2(QMainWindow):
         self.add_movie(self.label, grid, original)
         #label.setPixmap(cropped.scaledToWidth(self.width()))
         self.label.setScaledContents(True)
-        original.start()
         
-        self.label.move(0, 0)
-        self.label.show()
+        #self.label.move(0, 0)
+        test_width = self.width()
+        test_height = self.height()
         self.label.resize(self.width() ,self.height())
+        #self.label.adjustSize()
+        label_height = self.label.height()
+        label_width = self.label.width()
+
+        
+        self.label.show()
+        
+        original.start()
+        test = 1
+        
 
 
     def add_movie(self, label, grid, movie) :
@@ -373,12 +397,6 @@ class Example2(QMainWindow):
         #label.setScaledContents(True)
         #grid.addWidget(label)
 
-    def create_layouts(self, widget, grid, rect) :
-        ## set contents margin get rid of default margin on grids and sets to 0
-        grid.setContentsMargins(0,0,0,0)
-        widget.setLayout(grid)
-        widget.setGeometry(rect)
-        widget.showFullScreen()
 
 
     def display_window(self) :
@@ -386,33 +404,7 @@ class Example2(QMainWindow):
 
 
 
-class Example3(QMainWindow):
 
-    def __init__(self):
-        super().__init__()
-        self.setGeometry(300, 300, 300, 200)
-        
-        self.choose_window(2)
-        
-        self.show()
-
-    def image_display(self, image) :
-
-        label = QLabel(self)
-        orignal = QPixmap(image)
-        Rect = QRect(int(orignal.width()/2)+1,0,int(orignal.width()/2),orignal.height())
-        cropped = QPixmap(orignal.copy(Rect))
-        label.setPixmap(cropped.scaledToWidth(self.width()))
-        label.setScaledContents(True)
-
-        label.move(0, 0)
-        label.show()
-        label.resize(self.width(),self.height())
-
-    def choose_window(self,  window) :
-        monitor = QDesktopWidget().screenGeometry(window)
-        self.move(monitor.left(), monitor.top())
-        self.showFullScreen()
 
 
 
