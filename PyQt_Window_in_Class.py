@@ -22,6 +22,8 @@ from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
 
+from fans import start_fans, stop_fans
+
 
 
 from PyQt5.QtCore import QRect, QTimer, QSize, Qt
@@ -156,7 +158,13 @@ class Example(QMainWindow):
             #t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
             #t.start()
             #self.recording_screen = 1
-            self.main_widget = 1        
+            self.main_widget = 1  
+
+            """"CROMACS START FANS"""
+            start_fans()
+
+
+                  
             
         else :
             
@@ -169,6 +177,10 @@ class Example(QMainWindow):
             #self.ex1_change_image(self.ex5, 'Waiting.jpg')
             #self.recording_screen = 0
             self.main_widget = 0 
+
+            """"CROMACS STOP FANS"""
+            stop_fans()
+            
 
     def ex1_change_image(self, win, image) :
         win.image_display(image)
