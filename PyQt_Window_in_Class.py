@@ -26,8 +26,6 @@ from PyQt5.QtGui import QPixmap, QMovie
 
 from PyQt5.QtCore import QRect, QTimer, QSize, Qt
 
-#from Microphone_Record import Microphone_Record
-
 class Example(QMainWindow):
 
     def __init__(self):
@@ -380,8 +378,6 @@ class Example2(QMainWindow):
         
         original.start()
 
-    def name_Window(self, name) :
-        self.setWindowTitle(name)
         
 
     def display_window(self) :
