@@ -58,6 +58,8 @@ class Example(QMainWindow):
     
         self.choose_window(0)
 
+        self.setAttribute(Qt.WA_AcceptTouchEvents)
+
         
 
         #### HAVE TO SET CENTRAL WIDGET FOR MAIN WINDOW
@@ -109,6 +111,8 @@ class Example(QMainWindow):
         ###  BEIGE ###   self.setStyleSheet("background-color: rgb(224,204,160);")
         #self.setStyleSheet("background-color: #152238;")
         self.setStyleSheet("background-color: white;")
+
+        
 
 
 
