@@ -24,9 +24,10 @@ from PyQt5.QtGui import QPixmap, QMovie
 
 from fans import start_fans, stop_fans
 
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 
-
-from PyQt5.QtCore import QRect, QTimer, QSize, Qt, QEvent
+from PyQt5.QtCore import QRect, QTimer, QSize, QUrl, Qt, QEvent
 
 class Example(QMainWindow):
     
@@ -77,11 +78,14 @@ class Example(QMainWindow):
 
 
 
-        self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
+        self.wid, self.wid2= QWidget(self), QWidget(self)
+        self.wid3 = QVideoWidget()
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
         label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-interface-idle-600px.gif')#, QMovie('recording_gif.gif')
+        self.original, self.gif_screen2 = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-interface-idle-600px.gif')#, QMovie('recording_gif.gif')
+        self.gif_screen = QMediaContent(QUrl.fromLocalFile('Test_Vid.wmv'))
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
@@ -89,9 +93,10 @@ class Example(QMainWindow):
             self.create_layouts(layout[0], layout[1], Rect)
             
 
+
         self.add_movie(label, grid2, self.original)
         #self.add_movie(label3, grid4, self.voice_gif)
-        self.add_movie(label2, grid3, self.gif_screen)
+        #self.add_movie(label2, grid3, self.gif_screen)
         
         
         
@@ -116,7 +121,9 @@ class Example(QMainWindow):
         #self.setStyleSheet("background-color: #152238;")
         self.setStyleSheet("background-color: white;")
 
-        
+        self.mediaPlayer.setVideoOutput(self.wid3)
+        self.mediaPlayer.setMedia(self.gif_screen)
+        self.mediaPlayer.play()
 
         
 
@@ -126,7 +133,7 @@ class Example(QMainWindow):
         self.wid2.hide()
         #self.wid4.hide()
         self.wid3.show()
-        self.gif_screen.start()
+        #self.gif_screen.start()
 
         
         
