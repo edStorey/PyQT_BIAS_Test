@@ -112,7 +112,7 @@ class Example(QMainWindow):
         #self.setStyleSheet("background-color: #152238;")
         self.setStyleSheet("background-color: white;")
 
-        self.wid3.setAttribute(Qt.accept)
+        
 
 
 
@@ -227,8 +227,8 @@ class Example(QMainWindow):
     def touchEvent(self, QTouchEvent) :
         self.stopScreenTimer()
 
-    def event(self, QWidget): 
-        if QEvent.type() == QEvent.TouchBegin: self.stopScreenTimer()
+    def eventFilter(self, obj, event): 
+        if event.type() == QEvent.TouchBegin: self.stopScreenTimer()
 
 
     def stopScreenTimer(self) :
