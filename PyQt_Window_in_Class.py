@@ -226,16 +226,16 @@ class Example(QMainWindow):
         self.startScreenTimer()
 
 
-    def eventFilter(self, obj, event): 
-        if event.type() == QEvent.TouchBegin: 
+    """def eventFilter(self, obj, event): 
+        if event.type() == QEvent.TouchUpdate: 
             self.stopScreenTimer()
-            return True
+            return False
         elif event.type() == QEvent.TouchEnd:  
             self.startScreenTimer()
-            return True
+            return False
 
         
-        return super(Example, self).eventFilter(obj, event)
+        return super(Example, self).eventFilter(obj, event)"""
 
 
     def stopScreenTimer(self) :
@@ -348,6 +348,7 @@ class Example(QMainWindow):
          button.clicked.connect(self.widget_hide)
          button.pressed.connect(self.stopScreenTimer)
          button.released.connect(self.startScreenTimer)
+         button.grabGesture(Qt.TapAndHoldGesture)
          #button.clicked.connect(self.ex1_change_image)
 
          if name == 'Z' :
