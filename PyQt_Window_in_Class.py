@@ -26,7 +26,7 @@ from fans import start_fans, stop_fans
 
 
 
-from PyQt5.QtCore import QRect, QTimer, QSize, Qt
+from PyQt5.QtCore import QRect, QTimer, QSize, Qt, QEvent
 
 class Example(QMainWindow):
     
@@ -112,7 +112,7 @@ class Example(QMainWindow):
         #self.setStyleSheet("background-color: #152238;")
         self.setStyleSheet("background-color: white;")
 
-        
+        self.wid3.setAttribute(Qt.accept)
 
 
 
@@ -226,6 +226,9 @@ class Example(QMainWindow):
 
     def touchEvent(self, QTouchEvent) :
         self.stopScreenTimer()
+
+    def event(self, QWidget): 
+        if QEvent.type() == QEvent.TouchBegin: self.stopScreenTimer()
 
 
     def stopScreenTimer(self) :
