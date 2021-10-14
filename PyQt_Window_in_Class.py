@@ -58,7 +58,10 @@ class Example(QMainWindow):
     
         self.choose_window(0)
 
-        self.setAttribute(Qt.WA_AcceptTouchEvents)
+        self.setAttribute(Qt.WA_AcceptTouchEvents, True)
+        self.installEventFilter(self)
+        
+        
 
         
 
@@ -91,6 +94,7 @@ class Example(QMainWindow):
         self.add_movie(label2, grid3, self.gif_screen)
         
         
+        
 
         self.set_button_layout(grid1)
 
@@ -114,6 +118,8 @@ class Example(QMainWindow):
 
         
 
+        
+
 
 
         self.wid.hide()
@@ -126,6 +132,8 @@ class Example(QMainWindow):
         
 
         self.show()
+
+        
 
 
 
@@ -158,10 +166,6 @@ class Example(QMainWindow):
             self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
             #self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
             self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
-            #self.ex1_change_image(self.ex5, 'Mel_no_border.jpeg')
-            #t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
-            #t.start()
-            #self.recording_screen = 1
             self.main_widget = 1  
 
             """"CROMACS START FANS"""
@@ -178,8 +182,6 @@ class Example(QMainWindow):
             self.ex1_change_image(self.ex2, self.idle_animation)
             #self.ex1_change_image(self.ex3, 'Waiting.jpg')
             self.ex1_change_image(self.ex4, self.idle_animation)
-            #self.ex1_change_image(self.ex5, 'Waiting.jpg')
-            #self.recording_screen = 0
             self.main_widget = 0 
 
             """"CROMACS STOP FANS"""
@@ -224,11 +226,16 @@ class Example(QMainWindow):
         self.startScreenTimer()
 
 
-    def touchEvent(self, QTouchEvent) :
-        self.stopScreenTimer()
-
     def eventFilter(self, obj, event): 
-        if event.type() == QEvent.TouchBegin: self.stopScreenTimer()
+        if event.type() == QEvent.TouchBegin: 
+            self.stopScreenTimer()
+            return True
+        elif event.type() == QEvent.TouchEnd:  
+            self.startScreenTimer()
+            return True
+
+        
+        return super(Example, self).eventFilter(obj, event)
 
 
     def stopScreenTimer(self) :
