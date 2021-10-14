@@ -220,6 +220,10 @@ class Example(QMainWindow):
         self.startScreenTimer()
 
 
+    def touchEvent(self, QTouchEvent) :
+        self.stopScreenTimer()
+
+
     def stopScreenTimer(self) :
         
         if self.main_widget == 0 :
