@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
 
-from fans import start_fans, stop_fans
+from fans import start_1, start_fans, stop_fans
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
@@ -52,7 +52,7 @@ class Example(QMainWindow):
         self.screen_saver_on = 0
 
         self.milli = 1000
-        self.screen_wait_time = 5 * self.milli
+        self.screen_wait_time = 10 * self.milli
         self.timer_wait_time = 20 * self.milli
 
         self.idle_animation = "Idle-Loop-LR-5s.gif"
@@ -169,13 +169,14 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
             self.widget_swap(self.wid2, self.wid)
-            self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex2, 'h1.gif')
             #self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
+            self.ex1_change_image(self.ex4, 'm1.gif')
+            self.ex2.audio_play('uterrance1.wav')
             self.main_widget = 1  
 
             """"CROMACS START FANS"""
-            start_fans()
+            start_1()
 
 
                   
@@ -188,6 +189,7 @@ class Example(QMainWindow):
             self.ex1_change_image(self.ex2, self.idle_animation)
             #self.ex1_change_image(self.ex3, 'Waiting.jpg')
             self.ex1_change_image(self.ex4, self.idle_animation)
+            self.ex2.audio_stop()
             self.main_widget = 0 
 
             """"CROMACS STOP FANS"""
@@ -381,7 +383,7 @@ class Example2(QMainWindow):
         self.label = QLabel(self)
         
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-        self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
+        #self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
         
         #self.setGeometry(300, 300, 300, 200)
         self.choose_window(1)
@@ -415,13 +417,22 @@ class Example2(QMainWindow):
        
         self.label.resize(self.width() ,self.height())
 
-        self.mediaPlayer.setMedia(self.gif_screen2)
-        self.mediaPlayer.play()
+        #self.mediaPlayer.setMedia(self.gif_screen2)
+        #self.mediaPlayer.play()
 
         
         self.label.show()
         
         original.start()
+
+    def audio_play(self, audio) :
+        #self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(None)))
+        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(audio)))
+        self.mediaPlayer.play()
+
+    def audio_stop(self) :
+        self.mediaPlayer.stop()
+        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(None)))
 
         
 
