@@ -18,14 +18,14 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 
 import sys, string
 #from threading import Thread
-from PyQt5.QtWidgets import (QFrame, QStyle, QVBoxLayout, QWidget, QGridLayout,
-    QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout, QGraphicsScene, QGraphicsView)
-from PyQt5.QtGui import QPixmap, QMovie, QPainter, QTransform
+from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
+    QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
+from PyQt5.QtGui import QPixmap, QMovie
 
 from fans import start_fans, stop_fans
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 
 from PyQt5.QtCore import QRect, QTimer, QSize, QUrl, Qt, QEvent
 
@@ -78,14 +78,14 @@ class Example(QMainWindow):
 
 
 
-        self.wid, self.wid2, self.wid3 = QWidget(self), QWidget(self), QWidget(self)
-        self.wid3_2 = QVideoWidget()
+        self.wid, self.wid2= QWidget(self), QWidget(self)
+        self.wid3 = QVideoWidget()
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
         label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
         self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-interface-idle-600px.gif')#, QMovie('recording_gif.gif')
-        self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Test_Vid.wmv'))
+        self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
         
@@ -122,8 +122,7 @@ class Example(QMainWindow):
         self.setStyleSheet("background-color: white;")
 
         #self.mediaPlayer.setVideoOutput(self.wid3)
-        #self.mediaPlayer.setMedia(self.gif_screen)
-        #self.mediaPlayer.play()
+        
 
         
 
@@ -155,7 +154,7 @@ class Example(QMainWindow):
         #     self.voice_gif.start()
         #     self.widget_swap(self.wid4, self.wid)
         #     self.ex1_change_image(self.ex2, 'Listening.jpeg')
-        #     self.ex1_change_image(self.ex3, 'Listening.jpeg')
+        #     self.ex1_change_image(self.ex3, 'LisStening.jpeg')
         #     self.ex1_change_image(self.ex4, 'Listening.jpeg')
         #     self.ex1_change_image(self.ex5, 'Listening.jpeg')
         #     t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
@@ -170,9 +169,9 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
             self.widget_swap(self.wid2, self.wid)
-            self.ex1_change_image(self.ex2, 'Test_Vid.wmv')
+            self.ex1_change_image(self.ex2, 'Mel_no_border.jpeg')
             #self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex4, 'Test_Vid.wmv')
+            self.ex1_change_image(self.ex4, 'Mel_no_border.jpeg')
             self.main_widget = 1  
 
             """"CROMACS START FANS"""
@@ -355,7 +354,7 @@ class Example(QMainWindow):
          button.clicked.connect(self.widget_hide)
          button.pressed.connect(self.stopScreenTimer)
          button.released.connect(self.startScreenTimer)
-         #button.grabGesture(Qt.TapAndHoldGesture)
+         button.grabGesture(Qt.TapAndHoldGesture)
          #button.clicked.connect(self.ex1_change_image)
 
          if name == 'Z' :
@@ -379,52 +378,10 @@ class Example2(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        width = 1280*2
-        Height = 800
-        self.Rect = QRect(0,0,int(self.width()),int(self.height()))
-   
-        # setting  the fixed width of window
-        self.setFixedWidth(width)
-        self.setFixedHeight(Height)
-
-        #self.label = QLabel(self)
-
-        self.grid_layout = QVBoxLayout()
-        #elf.grid_layout.setContentsMargins(0,0,0,0)
-        #self.grid_layout.setGeometry(self.Rect)
-        #self.grid_layout.setStretch(10,100)
-
-        self.videoItem = QGraphicsVideoItem()
-
-        self.video_widget = QVideoWidget()
+        self.label = QLabel(self)
+        
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-        #self.grid_layout.addWidget(self.video_widget)
-        self.video_widget.setLayout(self.grid_layout)
-
-
-
-        """"COPIED STUFF"""
-        self.item = QGraphicsVideoItem()
-        self.item.setAspectRatioMode(Qt.KeepAspectRatio)
-        self.scene = QGraphicsScene(self)
-        self.scene.addItem(self.item)
-        self.scene.setBackgroundBrush(Qt.black)
-        self.view = QGraphicsView(self.scene)
-        self.view.setRenderHint(QPainter.Antialiasing, True)
-        self.view.setRenderHint(QPainter.SmoothPixmapTransform, True)
-        self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        
-        #self.grid_layout.addWidget(self.view)
-
-        
-        self.mediaPlayer.setVideoOutput(self.video_widget)
-
-        
-
-        #self.setLayout(self.grid_layout)
-
-        self.setCentralWidget(self.video_widget)
+        self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
         
         #self.setGeometry(300, 300, 300, 200)
         self.choose_window(1)
@@ -434,7 +391,12 @@ class Example2(QMainWindow):
     def choose_window(self,  window) :
         monitor = QDesktopWidget().screenGeometry(window)
         self.move(monitor.left(), monitor.top())
-        
+        width = 1280*2
+        Height = 800
+   
+        # setting  the fixed width of window
+        self.setFixedWidth(width)
+        self.setFixedHeight(Height)
         
 
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -443,56 +405,23 @@ class Example2(QMainWindow):
 
     def image_display(self, image) :
 
-        
-
-        self.mediaPlayer.stop()
-
-        #self.label.clear()
+        self.label.clear()
 
 
-        #original = QMovie(image)
-        #self.label.setMovie(original)
-        #self.label.setScaledContents(True)
+        original = QMovie(image)
+        self.label.setMovie(original)
+        self.label.setScaledContents(True)
         
        
-        #self.label.resize(self.width() ,self.height())
+        self.label.resize(self.width() ,self.height())
 
-        self.mediaPlayer.setMedia(QMediaContent(None))
-        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav')))
-        
-        self.view.fitInView(0,0, self.width(), self.height())
-        self.view.resize(self.width(), self.height())
-        self.view.isFullScreen()
-        self.view.setTransform(QTransform())        #self.mediaPlayer.setMedia(image)
-        #self.video_widget.setStyleSheet("{border-style: none;}")
-        #self.view.setSceneRect(400,0, 400, 2400)
-
-        #self.video_widget.resize(self.width()*2 ,self.height())
-        
-        #self.video_widget.move(-300,0)
-
-        #self.video_widget.setAspectRatioMode()
-        
-        #self.video_widget.autoFillBackground()
-
-        #self.video_widget.
-        y =self.video_widget.height()
-        x =self.video_widget.width()
-
-        ys =self.scene.height()
-        xs =self.scene.width()
-        
-        #self.video_widget.showFullScreen()
-
-
-
-        
-
-        
-        self.view.show()
+        self.mediaPlayer.setMedia(self.gif_screen2)
         self.mediaPlayer.play()
+
         
-        #original.start()
+        self.label.show()
+        
+        original.start()
 
         
 
