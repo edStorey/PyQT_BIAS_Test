@@ -52,7 +52,7 @@ class Example(QMainWindow):
         self.screen_saver_on = 0
 
         self.milli = 1000
-        self.screen_wait_time = 10 * self.milli
+        self.screen_wait_time = 15 * self.milli
         self.timer_wait_time = 20 * self.milli
 
         self.idle_animation = "Idle-Loop-LR-5s.gif"
@@ -82,7 +82,7 @@ class Example(QMainWindow):
         self.wid3 = QVideoWidget()
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
-        label, label2 = QLabel(self), QLabel(self)
+        self.label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
         self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-interface-idle-600px.gif')#, QMovie('recording_gif.gif')
         self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
@@ -94,7 +94,7 @@ class Example(QMainWindow):
             
 
 
-        self.add_movie(label, grid2, self.original)
+        self.add_movie(self.label, grid2, self.original)
         #self.add_movie(label3, grid4, self.voice_gif)
         self.add_movie(label2, grid3, self.gif_screen)
         
@@ -139,14 +139,31 @@ class Example(QMainWindow):
 
         self.show()
 
+
+    def image_display(self, image) :
+    
+        self.label.clear()
+
+
+        original = QMovie(image)
+        self.label.setMovie(original)
+        self.label.setScaledContents(True)
         
+       
+        self.label.resize(self.width() ,self.height())
 
+        #self.mediaPlayer.setMedia(self.gif_screen2)
+        #self.mediaPlayer.play()
 
+        
+        self.label.show()
+        
+        original.start()
 
 
     """"FUNCTIONAL FUNCTIONS"""
 
-    def widget_hide(self) :
+    def widget_hide(self, H_GIF = "Idle-Loop-LR-5s.gif", M_GIF = "Idle-Loop-LR-5s.gif", WAV = None, TS_GIF = 'I_cant_hear_you.gif') :
         # if self.main_widget == 0 :
 
         #     self.screen_timer.stop()
@@ -169,14 +186,15 @@ class Example(QMainWindow):
             self.start_timer(self.timer, self.timer_wait_time)
             self.original.start()
             self.widget_swap(self.wid2, self.wid)
-            self.ex1_change_image(self.ex2, 'h1.gif')
+            self.ex1_change_image(self.ex2, H_GIF)
             #self.ex1_change_image(self.ex3, 'Mel_no_border.jpeg')
-            self.ex1_change_image(self.ex4, 'm1.gif')
-            self.ex2.audio_play('uterrance1.wav')
+            self.ex1_change_image(self.ex4, M_GIF)
+            self.image_display(TS_GIF)
+            self.ex2.audio_play(WAV)
             self.main_widget = 1  
 
             """"CROMACS START FANS"""
-            start_1()
+            #start_1()
 
 
                   
@@ -326,43 +344,80 @@ class Example(QMainWindow):
         ### CREATE WIDGET LAYOUT
         positions = [(i, j) for i in range(1,4) for j in range(1,4)]
 
-        for position, name in zip(positions, Utterances_List):
-         button = QPushButton(name)
-         button.setMinimumSize(int(self.wid.width()/4),int(self.wid.height()/4))
-         button.setStyleSheet("QPushButton { "
-                              #"color: rgb(127,84,23) ;"
-                              #"color: #FF007F ;"
-                              "color: black ;"
-                              #"border-color: rgb(214,163,84) ;"
-                              "border-color: #09f8fb ;"
-                              "border-color: black ;"
-                              "border-style: outset;"
-                              "border-radius: 40px;"
-                              "background-color: green;"
-                              #"background-color: rgb(224,204,151);" ### Beige
-                              "background-color: rgb(255,255,255, 0);"
-                              #"selection-color: red ;"
-                              #"selection-background-color: teal;"
-                              "border-width: 2px;"
-                              #"border-color: green;"
-                              "font: bold 33px;"
-                              "padding: 6px; }"
-                              #"QPushButton::hover { background-color: green }"
-                              #"QPushButton::pressed { background-color: teal }"
-                              #"QPushButton::pressed { background-color: rgb(225,179,120) }"
-                              "QPushButton::pressed { background-color: rgb(0,0,0, 25) }"
-                              )
+        file_list = []
+        
+        self.btn1, self.btn2, self.btn3, self.btn4, self.btn5, self.btn6, self.btn7, self.btn8, self.btn9 = {
+                    QPushButton(Utterances_List[0]), QPushButton(Utterances_List[1]), QPushButton(Utterances_List[2]), 
+                    QPushButton(Utterances_List[3]), QPushButton(Utterances_List[4]), QPushButton(Utterances_List[5]),
+                    QPushButton(Utterances_List[6]), QPushButton(Utterances_List[7]), QPushButton(Utterances_List[8])}
 
-         button.clicked.connect(self.widget_hide)
-         button.pressed.connect(self.stopScreenTimer)
-         button.released.connect(self.startScreenTimer)
-         button.grabGesture(Qt.TapAndHoldGesture)
-         #button.clicked.connect(self.ex1_change_image)
 
-         if name == 'Z' :
-            grid.addWidget(button, 6, 3)
-         else :
-            grid.addWidget(button, *position)
+        #buttons = [self.btn1, self.btn2, self.btn3, self.btn4, self.btn5, self.btn6, self.btn7, self.btn8, self.btn9]
+        buttons = []
+
+        for number in range(1, 10) :
+            h_gif = "H_Utterances/HU" + str(number) + ".gif"
+            m_gif = "M_Utterances/MU" + str(number) + ".gif"
+            wav = "Wav_Files/WU" + str(number) + ".wav"
+
+            file_list.append([h_gif, m_gif, wav])
+
+        
+
+
+
+        for position, name in zip( positions, Utterances_List):
+            button = QPushButton(name)
+            buttons.append(button)
+            button.setMinimumSize(int(self.wid.width()/4),int(self.wid.height()/4))
+            button.setStyleSheet("QPushButton { "
+                                                    #"color: rgb(127,84,23) ;"
+                                                    #"color: #FF007F ;"
+                                                    "color: black ;"
+                                                    #"border-color: rgb(214,163,84) ;"
+                                                    "border-color: #09f8fb ;"
+                                                    "border-color: black ;"
+                                                    "border-style: outset;"
+                                                    "border-radius: 40px;"
+                                                    "background-color: green;"
+                                                    #"background-color: rgb(224,204,151);" ### Beige
+                                                    "background-color: rgb(255,255,255, 0);"
+                                                    #"selection-color: red ;"
+                                                    #"selection-background-color: teal;"
+                                                    "border-width: 2px;"
+                                                    #"border-color: green;"
+                                                    "font: bold 33px;"
+                                                    "padding: 6px; }"
+                                                    #"QPushButton::hover { background-color: green }"
+                                                    #"QPushButton::pressed { background-color: teal }"
+                                                    #"QPushButton::pressed { background-color: rgb(225,179,120) }"
+                                                    "QPushButton::pressed { background-color: rgb(0,0,0, 25) }"
+                                                    )
+            if name == 'Z' :
+                grid.addWidget(button, 6, 3)
+            else :
+                grid.addWidget(button, *position)
+
+
+            
+       # for button, number in zip(self.buttons, number_list) :
+            
+
+            
+            button.pressed.connect(self.stopScreenTimer)
+            button.released.connect(self.startScreenTimer)
+            button.grabGesture(Qt.TapAndHoldGesture)
+            #button.clicked.connect(self.ex1_change_image)
+
+        buttons[0].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[0][0], M_GIF = file_list[0][1], WAV = file_list[0][2]))
+        buttons[1].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[1][0], M_GIF = file_list[1][1], WAV = file_list[1][2]))
+        buttons[2].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[2][0], M_GIF = file_list[2][1], WAV = file_list[2][2]))
+        buttons[3].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[3][0], M_GIF = file_list[3][1], WAV = file_list[3][2]))
+        buttons[4].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[4][0], M_GIF = file_list[4][1], WAV = file_list[4][2]))
+        buttons[5].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[5][0], M_GIF = file_list[5][1], WAV = file_list[5][2]))
+        buttons[6].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[6][0], M_GIF = file_list[6][1], WAV = file_list[6][2]))
+        buttons[7].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[7][0], M_GIF = file_list[7][1], WAV = file_list[7][2]))
+        buttons[8].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[8][0], M_GIF = file_list[8][1], WAV = file_list[8][2]))    
 
 
 
