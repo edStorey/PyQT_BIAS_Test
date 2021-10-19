@@ -53,7 +53,7 @@ class Example(QMainWindow):
 
         self.milli = 1000
         self.screen_wait_time = 20 * self.milli
-        self.timer_wait_time = 20 * self.milli
+        self.timer_wait_time = 45 * self.milli
 
         self.idle_animation = "Idle-Loop-LR-5s.gif"
     
