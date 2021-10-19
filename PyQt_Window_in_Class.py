@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
 from PyQt5.QtGui import QPixmap, QMovie
 
-from fans import start_1, start_fans, stop_fans
+import fans
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
@@ -55,7 +55,7 @@ class Example(QMainWindow):
         self.screen_wait_time = 20 * self.milli
         self.timer_wait_time = 45 * self.milli
 
-        self.idle_animation = "Idle-Loop-LR-5s.gif"
+        self.H_idle_animation, self.M_idle_animation = "Idle-Loop-LR-5s.gif", "reversed-Idle-Loop-LR-5s.gif"
     
         self.choose_window(0)
 
@@ -111,9 +111,9 @@ class Example(QMainWindow):
         self.set_central_widget([self.wid3, self.wid, self.wid2], self.central_wid)
         
 
-        self.ex2.image_display(self.idle_animation)
+        self.ex2.image_display(self.H_idle_animation)
         #self.ex3.image_display('Waiting.jpg')
-        self.ex4.image_display(self.idle_animation)
+        self.ex4.image_display(self.M_idle_animation)
         
         self.setStyleSheet("background-color: white;")
 
@@ -200,14 +200,14 @@ class Example(QMainWindow):
             self.original.stop()
             self.start_timer(self.screen_timer, self.screen_wait_time)
             self.widget_swap(self.wid, self.wid2)
-            self.ex1_change_image(self.ex2, self.idle_animation)
+            self.ex1_change_image(self.ex2, self.H_idle_animation)
             #self.ex1_change_image(self.ex3, 'Waiting.jpg')
-            self.ex1_change_image(self.ex4, self.idle_animation)
+            self.ex1_change_image(self.ex4, self.M_idle_animation)
             self.ex2.audio_stop()
             self.main_widget = 0 
 
             """"CROMACS STOP FANS"""
-            stop_fans()
+            fans.stop_fans()
             
 
     def ex1_change_image(self, win, image) :
@@ -416,6 +416,16 @@ class Example(QMainWindow):
         buttons[7].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[7][0], M_GIF = file_list[7][1], WAV = file_list[7][2], TS_GIF = file_list[7][3]))
         buttons[8].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[8][0], M_GIF = file_list[8][1], WAV = file_list[8][2], TS_GIF = file_list[8][3]))    
 
+
+        buttons[0].clicked.connect(fans.start_1)
+        buttons[1].clicked.connect(fans.start_2)
+        buttons[2].clicked.connect(fans.start_3)
+        buttons[3].clicked.connect(fans.start_4)
+        buttons[4].clicked.connect(fans.start_5)
+        buttons[5].clicked.connect(fans.start_6)
+        buttons[6].clicked.connect(fans.start_7)
+        buttons[7].clicked.connect(fans.start_8)
+        buttons[8].clicked.connect(fans.start_9)
 
 
     def set_central_widget(self, Widgets, central_widget) :

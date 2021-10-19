@@ -4,65 +4,67 @@ def start_1():
     import threading
     th = threading.Thread(target=start_fans,args=(1 , ))
     th.start()
-    th.join()
 
+    
 def start_2():
     import threading
     th = threading.Thread(target=start_fans,args=(2 , ))
     th.start()
-    th.join()
+   
     
 def start_3():
     import threading
     th = threading.Thread(target=start_fans,args=(3 , ))
     th.start()
-    th.join()
+   
     
 def start_4():
     import threading
     th = threading.Thread(target=start_fans,args=(4 , ))
     th.start()
-    th.join()
+ 
     
 def start_5():
     import threading
     th = threading.Thread(target=start_fans,args=(5 , ))
     th.start()
-    th.join()
+
+  
     
 def start_6():
     import threading
     th = threading.Thread(target=start_fans,args=(6 , ))
     th.start()
-    th.join()
     
 def start_7():
     import threading
     th = threading.Thread(target=start_fans,args=(7 , ))
     th.start()
-    th.join()
+  
     
 def start_8():
     import threading
     th = threading.Thread(target=start_fans,args=(8 , ))
     th.start()
-    th.join()
+    
 
 def start_9():
     import threading
     th = threading.Thread(target=start_fans,args=(9 , ))
     th.start()
-    th.join()
+
+      
 
 
 #Controller function for each sequence    
 def start_fans(seq):
+    #Imports
     from stupidArtnet.StupidArtnet import StupidArtnet
     import time
     
     ramp_interval = 0.5 #(amount of time fans get between receiving their ramp up and ramp down command)
     start_interval = 5 #Amount of time to wait before starting human fans
-    split_interval = 5 #Amount of time between human segments
+    split_interval = 10 #Amount of time between human segments
     
     #Nested function for importing data
     def load_powers(filename):
@@ -102,6 +104,7 @@ def start_fans(seq):
     m_l = StupidArtnet("2.255.255.255", 3, 512, 30, True, True)
     m_r = StupidArtnet("2.255.255.255", 2, 512, 30, True, True)
     
+    
     #Start all 4 controllers
     h_l.start()
     h_r.start()
@@ -127,24 +130,39 @@ def start_fans(seq):
     
     #Send human data in "split_interval" seconds
     for i in range(0,4):
-        time.sleep(split_interval-ramp_interval)
+        
+        #Ramp up
         h_l.blackout()
         h_l.set(human_l[i][0])
         h_r.blackout()
         h_r.set(human_r[i][0])
         
-        
+        #Full speed
         time.sleep(ramp_interval)
         h_l.blackout()
         h_l.set(human_l[i][1])
         h_r.blackout()
         h_r.set(human_r[i][1])
+        
+        #Sleep between sequences
+        time.sleep(split_interval-ramp_interval)
        
     #Kill everything at end of thread to avoid collision
     h_l.blackout()
+    time.sleep(0.1)
     h_r.blackout()
+    time.sleep(0.1)
     m_l.blackout()
+    time.sleep(0.1)
     m_r.blackout()
+    
+    h_l.stop()
+    time.sleep(0.1)
+    h_r.stop()
+    time.sleep(0.1)
+    m_l.stop()
+    time.sleep(0.1)
+    m_r.stop()
     
     h_l.stop()
     h_r.stop()
@@ -161,7 +179,6 @@ def start_fans(seq):
 
 def stop_fans():
     from stupidArtnet.StupidArtnet import StupidArtnet
-
     
     h_l = StupidArtnet("2.255.255.255", 0, 512, 30, True, True)
     h_r = StupidArtnet("2.255.255.255", 1, 512, 30, True, True)
@@ -178,6 +195,11 @@ def stop_fans():
     h_r.blackout()
     m_l.blackout()
     m_r.blackout()
+    
+    h_l.stop()
+    h_r.stop()
+    m_l.stop()
+    m_r.stop()
     
     h_l.stop()
     h_r.stop()
