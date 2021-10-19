@@ -114,11 +114,7 @@ class Example(QMainWindow):
         self.ex2.image_display(self.idle_animation)
         #self.ex3.image_display('Waiting.jpg')
         self.ex4.image_display(self.idle_animation)
-        #self.ex5.image_display('Waiting.jpg')
-
-
-        ###  BEIGE ###   self.setStyleSheet("background-color: rgb(224,204,160);")
-        #self.setStyleSheet("background-color: #152238;")
+        
         self.setStyleSheet("background-color: white;")
 
         #self.mediaPlayer.setVideoOutput(self.wid3)
@@ -142,7 +138,7 @@ class Example(QMainWindow):
 
     def image_display(self, image) :
     
-        self.label.clear()
+        #self.label.clear()
 
 
         original = QMovie(image)
@@ -359,8 +355,9 @@ class Example(QMainWindow):
             h_gif = "H_Utterances/HU" + str(number) + ".gif"
             m_gif = "M_Utterances/MU" + str(number) + ".gif"
             wav = "Wav_Files/WU" + str(number) + ".wav"
+            i_gif = "Interface_Gifs/IU" + str(number) + ".gif"
 
-            file_list.append([h_gif, m_gif, wav])
+            file_list.append([h_gif, m_gif, wav, i_gif])
 
         
 
@@ -409,15 +406,15 @@ class Example(QMainWindow):
             button.grabGesture(Qt.TapAndHoldGesture)
             #button.clicked.connect(self.ex1_change_image)
 
-        buttons[0].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[0][0], M_GIF = file_list[0][1], WAV = file_list[0][2]))
-        buttons[1].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[1][0], M_GIF = file_list[1][1], WAV = file_list[1][2]))
-        buttons[2].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[2][0], M_GIF = file_list[2][1], WAV = file_list[2][2]))
-        buttons[3].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[3][0], M_GIF = file_list[3][1], WAV = file_list[3][2]))
-        buttons[4].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[4][0], M_GIF = file_list[4][1], WAV = file_list[4][2]))
-        buttons[5].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[5][0], M_GIF = file_list[5][1], WAV = file_list[5][2]))
-        buttons[6].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[6][0], M_GIF = file_list[6][1], WAV = file_list[6][2]))
-        buttons[7].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[7][0], M_GIF = file_list[7][1], WAV = file_list[7][2]))
-        buttons[8].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[8][0], M_GIF = file_list[8][1], WAV = file_list[8][2]))    
+        buttons[0].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[0][0], M_GIF = file_list[0][1], WAV = file_list[0][2], TS_GIF = file_list[0][3]))
+        buttons[1].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[1][0], M_GIF = file_list[1][1], WAV = file_list[1][2], TS_GIF = file_list[1][3]))
+        buttons[2].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[2][0], M_GIF = file_list[2][1], WAV = file_list[2][2], TS_GIF = file_list[2][3]))
+        buttons[3].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[3][0], M_GIF = file_list[3][1], WAV = file_list[3][2], TS_GIF = file_list[3][3]))
+        buttons[4].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[4][0], M_GIF = file_list[4][1], WAV = file_list[4][2], TS_GIF = file_list[4][3]))
+        buttons[5].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[5][0], M_GIF = file_list[5][1], WAV = file_list[5][2], TS_GIF = file_list[5][3]))
+        buttons[6].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[6][0], M_GIF = file_list[6][1], WAV = file_list[6][2], TS_GIF = file_list[6][3]))
+        buttons[7].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[7][0], M_GIF = file_list[7][1], WAV = file_list[7][2], TS_GIF = file_list[7][3]))
+        buttons[8].clicked.connect(lambda : self.widget_hide(H_GIF = file_list[8][0], M_GIF = file_list[8][1], WAV = file_list[8][2], TS_GIF = file_list[8][3]))    
 
 
 
