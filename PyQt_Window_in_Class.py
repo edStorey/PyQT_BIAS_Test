@@ -82,7 +82,7 @@ class Example(QMainWindow):
         grid1, grid2, grid3 = QGridLayout(), QGridLayout(), QGridLayout() 
         self.label, label2 = QLabel(self), QLabel(self)
         self.timer, self.screen_timer = QTimer(), QTimer()
-        self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-interface-idle-600px.gif')#, QMovie('recording_gif.gif')
+        self.original, self.gif_screen = QMovie('I_cant_hear_you.gif'), QMovie('UVoB-vid-1024x600.gif')
         self.gif_screen2 = QMediaContent(QUrl.fromLocalFile('Segment-2011-05-01-HermeTest.wav'))
         Rect = QRect(0,0,int(self.width()),int(self.height()))
 
