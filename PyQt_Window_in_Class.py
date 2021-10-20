@@ -18,16 +18,16 @@ THUS FILE MAKES A WINDOW FULLSCREEN ON YOUR FIRST MONITOR AND THEN CREATES A BUT
 
 import sys, string
 #from threading import Thread
-from PyQt5.QtWidgets import (QFrame, QStyle, QWidget, QGridLayout,
+from PyQt5.QtWidgets import ( QWidget, QGridLayout,
     QPushButton, QApplication, QMainWindow, QDesktopWidget, QLabel, QStackedLayout)
-from PyQt5.QtGui import QPixmap, QMovie
+from PyQt5.QtGui import QMovie
 
 import fans
 
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 
-from PyQt5.QtCore import QRect, QTimer, QSize, QUrl, Qt, QEvent
+from PyQt5.QtCore import QRect, QTimer, QUrl, Qt
 
 class Example(QMainWindow):
     
@@ -73,8 +73,6 @@ class Example(QMainWindow):
 
         self.ex2.setWindowTitle("Human_Voice")
         self.ex4.setWindowTitle("Synthetic_Voice")
-        #self.ex3, self.ex5 = Example3(), Example3()
-        #self.Mic = Microphone_Record()
 
 
 
@@ -148,9 +146,6 @@ class Example(QMainWindow):
        
         self.label.resize(self.width() ,self.height())
 
-        #self.mediaPlayer.setMedia(self.gif_screen2)
-        #self.mediaPlayer.play()
-
         
         self.label.show()
         
@@ -160,21 +155,7 @@ class Example(QMainWindow):
     """"FUNCTIONAL FUNCTIONS"""
 
     def widget_hide(self, H_GIF = "Idle-Loop-LR-5s.gif", M_GIF = "Idle-Loop-LR-5s.gif", WAV = None, TS_GIF = 'I_cant_hear_you.gif') :
-        # if self.main_widget == 0 :
-
-        #     self.screen_timer.stop()
-        #     self.start_timer(self.timer, self.timer_wait_time)
-        #     self.voice_gif.start()
-        #     self.widget_swap(self.wid4, self.wid)
-        #     self.ex1_change_image(self.ex2, 'Listening.jpeg')
-        #     self.ex1_change_image(self.ex3, 'LisStening.jpeg')
-        #     self.ex1_change_image(self.ex4, 'Listening.jpeg')
-        #     self.ex1_change_image(self.ex5, 'Listening.jpeg')
-        #     t = Thread(target = self.Mic.record, args = ((self.timer_wait_time/self.milli),))
-        #     t.start()
-        #     self.recording_screen = 1
-        #     self.main_widget = 1 
-        # el
+       
         if self.main_widget == 0 :
     
             self.screen_timer.stop()
@@ -247,17 +228,6 @@ class Example(QMainWindow):
 
         self.startScreenTimer()
 
-
-    """def eventFilter(self, obj, event): 
-        if event.type() == QEvent.TouchUpdate: 
-            self.stopScreenTimer()
-            return False
-        elif event.type() == QEvent.TouchEnd:  
-            self.startScreenTimer()
-            return False
-
-        
-        return super(Example, self).eventFilter(obj, event)"""
 
 
     def stopScreenTimer(self) :
@@ -368,8 +338,7 @@ class Example(QMainWindow):
             buttons.append(button)
             button.setMinimumSize(int(self.wid.width()/4),int(self.wid.height()/4))
             button.setStyleSheet("QPushButton { "
-                                                    #"color: rgb(127,84,23) ;"
-                                                    #"color: #FF007F ;"
+                                                    
                                                     "color: black ;"
                                                     #"border-color: rgb(214,163,84) ;"
                                                     "border-color: #09f8fb ;"
@@ -385,9 +354,6 @@ class Example(QMainWindow):
                                                     #"border-color: green;"
                                                     "font: bold 33px;"
                                                     "padding: 6px; }"
-                                                    #"QPushButton::hover { background-color: green }"
-                                                    #"QPushButton::pressed { background-color: teal }"
-                                                    #"QPushButton::pressed { background-color: rgb(225,179,120) }"
                                                     "QPushButton::pressed { background-color: rgb(0,0,0, 25) }"
                                                     )
             if name == 'Z' :
@@ -478,9 +444,6 @@ class Example2(QMainWindow):
         
        
         self.label.resize(self.width() ,self.height())
-
-        #self.mediaPlayer.setMedia(self.gif_screen2)
-        #self.mediaPlayer.play()
 
         
         self.label.show()
